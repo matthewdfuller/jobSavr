@@ -2,7 +2,7 @@ var prod = false;
 
 var backendURL;
 if (prod)
-    backendURL = 'https://secure.bluehost.com/~cranecon/jobsavr/backend/index.php';
+    backendURL = 'https://rinon.info/backend';
 else
     backendURL = 'https://localhost/backend/index.php';
 
