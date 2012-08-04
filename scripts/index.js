@@ -47,6 +47,7 @@ function addJob() {
 		alert('add job error: ' + textStatus);
 	}
     });
+    getJobs();
 }
 
 
@@ -91,6 +92,7 @@ function deleteJob() {
 
 
 function getJobs() {
+    $("#left_inner").html("");
     $.ajax({
 	    type: 'GET',
         dataType: 'json',
