@@ -87,11 +87,12 @@ function updateJob() {
 function deleteJob() {
     $.ajax({
         type: 'DELETE',
-	    contentType: 'application/json',
+	contentType: 'application/json',
         url: backendURL,
         dataType: 'json',
-        data: JSON.stringify({
-            "id": $('#hidden_id').val()}),  // put job id here.
+        data: JSON.stringify(cur_job),
+        //data: JSON.stringify({
+        //   "id": $('#hidden_id').val()}),  // put job id here.
         success: function(data, textStatus, jqXHR){
             if (handleError(data)) return;
         },
@@ -110,7 +111,7 @@ function deleteJob() {
 
 
 function getJobs() {
-    //$("#left_inner").html("");
+    $("#left_inner").html("");
     $.ajax({
 	    type: 'GET',
         dataType: 'json',
@@ -158,7 +159,7 @@ function updateRight(elem) {
     console.log(cur_job);
     document.getElementById('posting_title').innerHTML="<input id=\"editable_post_title\" class=\"editable\" onBlur=\"saveChanges()\" type=\"text\" value=\"" + cur_job.title + "\"/>" + " <br/><div id=\"posting_top_company_name\">" + "<input id=\"editable_post_company\"class=\"editable\" onBlur=\"saveChanges()\" type=\"text\" value=\"" + cur_job.company + "\"/></div>";
     document.getElementById('posting_url').innerHTML= "<a href=\"" + cur_job.url + "\">" + cur_job.url + "</a>";
-    document.getElementById('posting_description').innerHTML="<input id=\"hidden_id\" type=\"hidden\" value=\"" + cur_job.job_id + "\"/><input id=\"company_id\" type=\"hidden\" value=\"" + cur_job.company_id + "\"/><textarea id=\"editable_description\" class=\"editable_textarea\" onBlur=\"saveChanges()\">" + cur_job.desc + "</textarea>";
+    document.getElementById('posting_description').innerHTML="<input id=\"hidden_id\" type=\"hidden\" value=\"" + cur_job.job_id + "\"/><input id=\"company_id\" type=\"hidden\" value=\"" + cur_job.company_id + "\"/><textarea id=\"editable_description\" class=\"editable_textarea\" onBlur=\"saveChanges()\">" + cur_job.description + "</textarea>";
 
     if (!cur_job.company_id) {
         getCompanyInfo(cur_job.company);
@@ -239,6 +240,7 @@ function getCompanyProfile(c_id) {
             document.getElementById('company_map').innerHTML="<img src=\"http://maps.googleapis.com/maps/api/staticmap?center=" + response.locations.values[0]["address"]["postalCode"] + "&zoom=13&size=350x300&maptype=roadmap&markers=color:red%7Ccolor:red%7Clabel:A%7C" + response.locations.values[0]["address"]["postalCode"] + "&sensor=false\"/>";
         }
         document.getElementById('company_twitter').innerHTML="@" + response.twitterId;
+        cur_job.twitterId = response.twitterId;
         zippy_code = response.locations.values[0]["address"]["postalCode"];
         //alert(num_employees);
         getConnections(response.name);
@@ -249,7 +251,7 @@ function getCompanyProfile(c_id) {
 }
 
 function getConnections(company_name_in) {
-    IN.API.Raw('/people-search:(people:(first-name,last-name,public-profile-url))?company-name=' + company_name_in + '&facet=network,F')
+    IN.API.Raw('/people-search:(people:(first-name,last-name,public-profile-url,picture-url))?company-name=' + company_name_in + '&facet=network,F')
     //IN.API.Raw('/people/~/connections:(first-name,last-name,positions)?company-name=mozilla-corporation')
     .result(function(value) {
         //alert(JSON.stringify(value));
@@ -257,7 +259,7 @@ function getConnections(company_name_in) {
         if (value.people.values) {
             $.each(value.people.values, function(index, person) {
                 //alert(person.firstName);
-                document.getElementById('you_know').innerHTML+=person.firstName + " " + person.lastName + " - <a href=\"" + person.publicProfileUrl + "\">ask for a recommendation?</a><br/>";
+                document.getElementById('you_know').innerHTML+= "<img src=\"" + person.pictureUrl + "\"/>" + person.firstName + " " + person.lastName + " - <a href=\"" + person.publicProfileUrl + "\">ask for a recommendation?</a><br/>";
             });
         }
 
@@ -283,7 +285,10 @@ function getSimilarJobs() {
 
         //document.getElementById('you_know').innerHTML=value.people.values[0].firstName + " " + value.people.values[0].lastName + " - <a href=\"" + value.people.values[0].publicProfileUrl + "\">ask for a recommendation?</a>";
         //alert(value.companies.values[0]["id"]);
-        
+        getTwitter();
     });
 }
 
+function getTwitter() {
+    $("twitter_feed").append("<script>new TWTR.Widget({version: 2,type: 'search',search: '" + cur_job.twitterId + "',interval: 30000,title: '',subject: '',width: 350,height: 300,theme: {shell: {background: '#8ec1da',color: '#ffffff'},tweets: {background: '#ffffff',color: '#444444',links: '#1985b5'}},features: {scrollbar: true,loop: true,live: true,behavior: 'default'}}).render().start();</script>");
+}
