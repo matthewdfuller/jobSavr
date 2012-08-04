@@ -1,4 +1,4 @@
-function addJob() {
+function popup() {
     document.getElementById('add_job_outer_box').style.display="block";
     var visible = true;
 }

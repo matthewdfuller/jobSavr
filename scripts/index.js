@@ -20,6 +20,68 @@ function displayProfiles(profiles) {
         "Welcome, " +  member.firstName + " " + member.lastName;
 }
 
+function addJob() {
+    $.ajax({
+	type: 'POST',
+	contentType: 'application/json',
+	url: rootURL,
+	dataType: 'json',
+	data: formToJSON(),
+	success: function(data, textStatus, jqXHR){
+		if (data[0] =='error') {
+			alert('error:' + data[0].text);
+		} else {
+			alert('job added successfully.');
+		}
+	},
+	error: function(jqXHR, textStatus, errorThrown){
+		alert('add job error: ' + textStatus);
+	}
+    });
+}
+
+
+function updateJob() {
+    $.ajax({
+        type: 'PUT',
+	contentType: 'application/json',
+        url: rootURL,
+        dataType: 'json',
+        data: formToJSON(),
+        success: function(data, textStatus, jqXHR){
+		if (data[0] =='error') {
+                        alert('error:' + data[0].text);
+                } else {
+                        alert('job updated successfully.');
+                }
+        },
+        error: function(jqXHR, textStatus, errorThrown){
+		alert('update job error: ' + textStatus);
+        }
+    });
+}
+
+
+function deleteJob() {
+    $.ajax({
+        type: 'DELETE',
+	contentType: 'application/json',
+        url: rootURL,
+        dataType: 'json',
+        data: id,  // pull job id here. 
+        success: function(data, textStatus, jqXHR){
+		if (data[0] =='error') {
+                        alert('error:' + data[0].text);
+                } else {
+                        alert('job deleted successfully.');
+                }
+        },
+        error: function(jqXHR, textStatus, errorThrown){
+		alert('delete job error: ' + textStatus);
+        }
+    });
+}
+
 
 function getJobs() {
     $.ajax({

@@ -70,14 +70,14 @@
         <div id="posting">
 <!--ADD JOB BUTTON-->
             <div id="add_job">
-                <a href="#" class="button big add" onclick="addJob()">Add New Job</a>
+                <a href="#" class="button big add" onclick="popup()">Add New Job</a>
             </div>
 <!--END ADD JOB BUTTON-->
 
             <div id="posting_content">
                 <div id="posting_top">
                     <div id="posting_title">
-                        IT Security Engineer // Mozilla Corporation    
+                        IT Security Engineer // Mozilla Corporation
                     </div>
                     <div id="posting_url">
                         <a href="http://mozilla.com/careers/post/23403s92">http://mozilla.com/careers/post/23403s92</a>
@@ -154,10 +154,10 @@
             <div id="add_job_inner_heading">
                 Adding a New Job...
             </div>
-            <form>
-                Enter Posting URL: <input class="textboxer" type="text"></input><br/>
-                Enter Job Title: <input class="textboxer" type="text"></input><br/>
-                Enter Company Name: <input class="textboxer" type="text"></input><br/>
+            <form onsubmit="addJob()">
+                Enter Posting URL: <input id="add_form_url" class="textboxer" type="text"></input><br/>
+                Enter Job Title: <input id="add_form_title" class="textboxer" type="text"></input><br/>
+                Enter Company Name: <input id="add_form_company_name" class="textboxer" type="text"></input><br/>
                 <input type="submit" class="button big add" value="Add Job"/>
             </form>
             <a href="#" onclick="closePopup()">Close</a>
