@@ -287,7 +287,7 @@ function getSimilarJobs() {
 
         //document.getElementById('you_know').innerHTML=value.people.values[0].firstName + " " + value.people.values[0].lastName + " - <a href=\"" + value.people.values[0].publicProfileUrl + "\">ask for a recommendation?</a>";
         //alert(value.companies.values[0]["id"]);
-        //getTwitter();
+        getTwitter();
     });
 }
 
