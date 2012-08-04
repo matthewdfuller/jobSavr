@@ -24,12 +24,19 @@ function displayProfiles(profiles) {
 function getJobs() {
     $.ajax({
 	    type: 'GET',
-        url: backendURL,
         dataType: 'json',
+        url: backendURL,
         success: function(data){
-            var list = data == null ? [] : (json.data.jobs instanceof Array ? data.jobs : [data.jobs]);
+            console.log(data);
+            var list = data == null ? [] : (data.jobs instanceof Array ? data.jobs : [data.jobs]);
 	        $.each(list, function(index, job) {
-		        $("#left_inner").append("<div id=\"job_" + job['id'] + "\" class=\"left_listing\" onclick=\"updateRight(this)\"><div class=\"listing_title\">" + job['title'] + "</div><div class=\"listing_company\">" + job['company'] + "</div></div><script type=\"text/javascript\">$('#job_' + " + job['id'] + "').data(\"job_info\", { job_title:\"" + job['title'] + "\", company_name:\"" + job['company'] + "\", url:\"" + job['url'] + "\"});</script>");
+		        $("#left_inner").append("<div id=\"job_" + job['id'] + "\" class=\"left_listing\" onclick=\"updateRight(this)\"><div class=\"listing_title\">" + job['title'] + "</div><div class=\"listing_company\">" + job['company'] + "</div></div>");
+                $("#job_" + job.id).data("job_info", {
+                    job_title: job['title'],
+                    company_name: job['company'],
+                    url: job['url']
+                });
+                console.log($("#job_" + job.id).data());
             });
         },
         error: function(obj, text){
@@ -44,6 +51,7 @@ function getJobs() {
 var currently_highlighted = "";
 
 function updateRight(elem) {
+    console.log($(elem));
     $(elem).toggleClass('left_listing_clicked');
     $(currently_highlighted).toggleClass('left_listing_clicked');
     currently_highlighted = elem;

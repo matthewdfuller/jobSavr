@@ -35,7 +35,7 @@ function getJobs() {
 		$jobs = $stmt->fetchAll(PDO::FETCH_OBJ);
 		$db = null;
 		echo '{';
-        echo 'jobs:' . json_encode($jobs) . ',';
+        echo '"jobs":' . json_encode($jobs);
         echo '}';
 	}catch(PDOException $e) {
 		echo '{"error":{"text":'. $e->getMessage() .'}}';
