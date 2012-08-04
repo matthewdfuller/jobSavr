@@ -251,15 +251,15 @@ function getCompanyProfile(c_id) {
 }
 
 function getConnections(company_name_in) {
-    IN.API.Raw('/people-search:(people:(first-name,last-name,public-profile-url))?company-name=' + company_name_in + '&facet=network,F')
+    IN.API.Raw('/people-search:(people:(first-name,last-name,public-profile-url,picture-url))?company-name=' + company_name_in + '&facet=network,F')
     //IN.API.Raw('/people/~/connections:(first-name,last-name,positions)?company-name=mozilla-corporation')
     .result(function(value) {
-        //alert(JSON.stringify(value));
+        alert(JSON.stringify(value));
         document.getElementById('you_know').innerHTML="";
         if (value.people.values) {
             $.each(value.people.values, function(index, person) {
                 //alert(person.firstName);
-                document.getElementById('you_know').innerHTML+=person.firstName + " " + person.lastName + " - <a href=\"" + person.publicProfileUrl + "\">ask for a recommendation?</a><br/>";
+                document.getElementById('you_know').innerHTML+= "<img src=\"" + person.pictureUrl + "\"/>" + person.firstName + " " + person.lastName + " - <a href=\"" + person.publicProfileUrl + "\">ask for a recommendation?</a><br/>";
             });
         }
 
