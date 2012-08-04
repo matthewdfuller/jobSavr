@@ -116,7 +116,8 @@ function deleteJob() {
 
 
 function getJobs() {
-    $("#left_inner").html("");
+    //$("#left_inner").html("");
+    //document.getElementById('left_inner').innerHTML="";
     $.ajax({
 	    type: 'GET',
         dataType: 'json',
