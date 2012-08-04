@@ -333,7 +333,9 @@ a:hover {text-decoration: underline; color: #0195C2;}
     cursor: pointer;
     list-style: none;
     padding: 0.5em;
-    border-bottom: 1px solid #000000;
+    border-bottom: 1px solid #EDEDED;
+    font-family: sans-serif;
+    background-image: url(''../images/right_bg.png'')
 }
 
 #company_search_results #company_search-none {
