@@ -4,10 +4,10 @@ require 'Slim/Slim.php';
 $app = new Slim();
 
 #$app->get('/index', 'test');
-$app->get('/index', 'getJobs');
-$app->post('/index', 'addJob');
-$app->put('/index', 'updateJob');
-$app->delete('/index','deleteJob');
+$app->get('/', 'getJobs');
+$app->post('/', 'addJob');
+$app->put('/', 'updateJob');
+$app->delete('/','deleteJob');
 
 $app->run();
 
@@ -24,16 +24,19 @@ function test() {
 function getJobs() {
 	global $app;
 	$request = Slim::getInstance()->request();
-	$token = $app->getCookie('token');
+	$auth_cookie = json_decode($app->getCookie('linkedin_oauth_l3bpklmxvfcp'));
+    $user_id = $auth_cookie->member_id;
 	$sql = "SELECT * FROM jobs WHERE user_token=:token";
 	try {
 		$db = connect();
 		$stmt = $db->prepare($sql);
-		$stmt->bindParam("token", $token);
+		$stmt->bindParam("token", $user_id);
 		$stmt->execute();
 		$jobs = $stmt->fetchAll(PDO::FETCH_OBJ);
 		$db = null;
-		echo '{"jobs":' . json_encode($jobs) . '}';
+		echo '{';
+        echo 'jobs:' . json_encode($jobs) . ',';
+        echo '}';
 	}catch(PDOException $e) {
 		echo '{"error":{"text":'. $e->getMessage() .'}}';
 	}
@@ -161,9 +164,9 @@ function verify($token, $id) {
 
 function connect() {
 	$dbhost="localhost";
-	$dbuser="root";
-	$dbpass="mozilla_oakwood";
-	$dbname="jobsavr";
+	$dbuser="cranecon_jobsavr";
+	$dbpass="cee-j6AH3quu";
+	$dbname="cranecon_jobsavr";
 	$dbh = new PDO("mysql:host=$dbhost;dbname=$dbname", $dbuser, $dbpass);	
 	$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	return $dbh;

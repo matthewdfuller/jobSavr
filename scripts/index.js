@@ -1,10 +1,38 @@
+//var backendURL = 'https://secure.bluehost.com/~cranecon/jobsavr/index.php';
+var backendURL = 'https://localhost/backend/index.php';
+
+
+// 2. Runs when the JavaScript framework is loaded
+function onLinkedInLoad() {
+    IN.Event.on(IN, "auth", onLinkedInAuth);
+}
+
+// 2. Runs when the viewer has authenticated
+function onLinkedInAuth() {
+    IN.API.Profile("me").result(displayProfiles);
+    getUsersJobs();
+}
+
+// 2. Runs when the Profile() API call returns successfully
+function displayProfiles(profiles) {
+    member = profiles.values[0];
+    document.getElementById("profiles").innerHTML = 
+        "Welcome, " +  member.firstName + " " + member.lastName;
+}
+
 function getUsersJobs() {
     $.ajax({
-        url: "",
-        dataType: 'json',
-        data: data,
+        url: backendURL,
+        type: 'GET',
+        //dataType: 'json',
+        //data: 'test',
         success: function(json_data){
-            var job_title = json_data.item[0].job_title;
+            console.log(json_data);
+            //var job_title = json_data.item[0].job_title;
+        },
+        error: function(obj, text){
+            console.log('ERROR: ' + text);
+            //var job_title = json_data.item[0].job_title;
         }
     });
 }

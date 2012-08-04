@@ -8,3 +8,9 @@ RewriteEngine On
 
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule ^(.*)$ index.php [QSA,L]
+
+<files index.php>
+<ifModule mod_headers.c>
+       Header set Access-Control-Allow-Origin "*"
+</ifModule>
+</files>
