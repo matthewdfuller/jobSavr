@@ -200,7 +200,7 @@ function getCompanyProfile(c_id) {
         document.getElementById('company_location').innerHTML=response.locations.values[0]["address"]["city"] + ", " + response.locations.values[0]["address"]["state"] + " " + response.locations.values[0]["address"]["postalCode"];
         zippy_code = response.locations.values[0]["address"]["postalCode"];
         document.getElementById('company_twitter').innerHTML="@" + response.twitterId;
-        document.getElementById('company_map').innerHTML="<img src=\"http://maps.googleapis.com/maps/api/staticmap?center=" + response.locations.values[0]["address"]["postalCode"] + "&zoom=13&size=350x300&maptype=roadmap&markers=color:red%7Ccolor:red%7Clabel:A%7C" + response.locations.values[0]["address"]["postalCode"] + "&sensor=false\"/>";
+        document.getElementById('company_map').innerHTML="<img src=\"http://maps.googleapis.com/maps/api/staticmap?center=" + response.locations.values[0]["address"]["postalCode"] + "&zoom=13&size=350x300&maptype=roadmap&markers=color:red%7Ccolor:red%7Clabel:A%7C" + response.locations.values[0]["address"]["postalCode"] + "&sensor=false&key=AIzaSyDvu0UwsVzVEQRsS-XYM07uk00CQ4GVDNw\"/>";
         //alert(num_employees);
         getConnections(response.name);
     });
