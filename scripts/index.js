@@ -72,6 +72,12 @@ function addJob() {
 
 
 function updateJob() {
+    updateAjax();
+    
+    getJobs();
+}
+
+function updateAjax() {
     $.ajax({
         type: 'PUT',
 	contentType: 'application/json',
@@ -85,8 +91,6 @@ function updateJob() {
 		    alert('update job error: ' + textStatus);
         }
     });
-    
-    getJobs();
 }
 
 function deleteJob() {
