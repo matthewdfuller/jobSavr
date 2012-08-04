@@ -144,7 +144,7 @@ function updateRight(elem) {
     document.getElementById('posting_description').innerHTML= $(elem).data("job_info").desc;
     
     getCompanyInfo($(elem).data("job_info").company_name);
-    getConnections(li_company_name);
+    //getConnections(li_company_name);
 }
 
 
@@ -156,17 +156,17 @@ function getCompanyInfo(company_name) {
         //alert(JSON.stringify(value));
         //alert(value.companies.values[0]["id"]);
         company_id = value.companies.values[0]["id"];
+        getCompanyProfile(value.companies.values[0]["id"]);
     })
-    .error(function(error) {
-        //alert(JSON.stringify(error));
-    });
-    
-    var url = "/companies/" + company_id + ":(name,description,website-url,twitter-id,employee-count-range,founded-year,locations:(address:(city,state,postal-code)))";
+}
+
+function getCompanyProfile(c_id) {
+    var url = "/companies/" + c_id + ":(name,description,website-url,twitter-id,employee-count-range,founded-year,locations:(address:(city,state,postal-code)))";
     IN.API.Raw(url)
     .result(function(response) {
         //alert(JSON.stringify(response));
         company_description = response.description;
-        li_company_name = response.name;
+        //li_company_name = response.name;
         
         document.getElementById('num_employees').innerHTML= response.employeeCountRange["name"];
         document.getElementById('company_website').innerHTML=response.websiteUrl;
@@ -176,6 +176,7 @@ function getCompanyInfo(company_name) {
         document.getElementById('company_twitter').innerHTML="@" + response.twitterId;
         document.getElementById('company_map').innerHTML="<img src=\"http://maps.googleapis.com/maps/api/staticmap?center=" + response.locations.values[0]["address"]["postalCode"] + "&zoom=13&size=350x300&maptype=roadmap&markers=color:red%7Ccolor:red%7Clabel:A%7C" + response.locations.values[0]["address"]["postalCode"] + "&sensor=false\"/>";
         //alert(num_employees);
+        getConnections(response.name);
     });
 }
 
@@ -183,8 +184,14 @@ function getConnections(company_name_in) {
     IN.API.Raw('/people-search:(people:(first-name,last-name,public-profile-url))?company-name=' + company_name_in + '&facet=network,F')
     //IN.API.Raw('/people/~/connections:(first-name,last-name,positions)?company-name=mozilla-corporation')
     .result(function(value) {
-        alert(JSON.stringify(value));
-        document.getElementById('you_know').innerHTML=value.people.values[0].firstName + " " + value.people.values[0].lastName + " - <a href=\"" + value.people.values[0].publicProfileUrl + "\">ask for a recommendation?</a>";
+        //alert(JSON.stringify(value));
+        document.getElementById('you_know').innerHTML="";
+        $.each(value.people.values, function(index, person) {
+                //alert(person.firstName);
+                document.getElementById('you_know').innerHTML+=person.firstName + " " + person.lastName + " - <a href=\"" + person.publicProfileUrl + "\">ask for a recommendation?</a><br/>";
+            })
+
+        //document.getElementById('you_know').innerHTML=value.people.values[0].firstName + " " + value.people.values[0].lastName + " - <a href=\"" + value.people.values[0].publicProfileUrl + "\">ask for a recommendation?</a>";
         //alert(value.companies.values[0]["id"]);
         
     })
