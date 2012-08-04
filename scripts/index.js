@@ -128,6 +128,9 @@ var company_description = "";
 var company_url = "";
 
 function updateRight(elem) {
+    document.getElementById('none_selected').style.display="none";
+    document.getElementById('posting_under').style.display="block";
+    document.getElementById('job_top_headline').style.display="block";
     console.log($(elem));
     $(elem).toggleClass('left_listing_clicked');
     $(currently_highlighted).toggleClass('left_listing_clicked');

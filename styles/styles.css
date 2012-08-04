@@ -179,6 +179,10 @@ a:hover {text-decoration: underline; color: #0195C2;}
     padding-top: 10px;
 }
 
+#job_top_headline {
+    display: none;
+}
+
 #posting_top a:link {text-decoration: none; color: #0195C2;}
 #posting_top a:visited {text-decoration: none; color: #0195C2;}
 #posting_top a:active {text-decoration: none; color: #0195C2;}
@@ -196,6 +200,7 @@ a:hover {text-decoration: underline; color: #0195C2;}
 }
 
 #posting_under {
+    display: none;
     font-family: 'Ruda', sans-serif;
     font-size: 15pt;
     height: 90%;
@@ -236,7 +241,6 @@ a:hover {text-decoration: underline; color: #0195C2;}
 }
 
 #none_selected {
-    display: none;
     width: 70%;
     margin-left: auto;
     margin-right: auto;
