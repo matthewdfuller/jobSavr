@@ -223,7 +223,7 @@ function verify($token, $id) {
 function connect() {
     global $prod;
     if ($prod) {
-        $dbhost="69.28.149.201";
+        $dbhost="172.16.0.51";
         $dbuser="rinoninf_jobsavr";
         $dbpass="cee-j6AH3quu";
         $dbname="rinoninf_jobsavr";
