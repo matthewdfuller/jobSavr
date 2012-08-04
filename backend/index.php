@@ -123,19 +123,20 @@ function checkJob($url, $token) {
 function updateJob() {
 	global $app;
 	$request = Slim::getInstance()->request();
-	$token = $app->getCookie('token');
+	$token = retrieve_member_id($app->request()->cookies());
+
 	$job = json_decode($request->getBody());
 	if (!verify($token, $job->id)) {
 		echo '{"error":"Job doesn\'t exist or you are not authorized."}';
 		return;
 	}
-	$sql = "UPDATE jobs SET url=:url, title=:title, company=:company, description=:desc WHERE id=:id AND user_token=:token";
+	$sql = "UPDATE jobs SET title=:title, company=:company, description=:desc WHERE id=:id AND user_token=:token";
 	try {
 		$db = connect();
 		$stmt = $db->prepare($sql);
 		$stmt->bindParam("id", $job->id);
 		$stmt->bindParam("token", $token);
-		$stmt->bindParam("url", $job->url);
+		//$stmt->bindParam("url", $job->url);
 		$stmt->bindParam("title", $job->title);
 		$stmt->bindParam("company", $job->company);
 		$stmt->bindParam("desc", $job->description);
@@ -151,7 +152,7 @@ function updateJob() {
 function deleteJob() {
 	global $app;
 	$request = Slim::getInstance()->request();
-	$token = $app->getCookie('token');
+	$token = retrieve_member_id($app->request()->cookies());
 	$job = json_decode($request->getBody());
 	if (!verify($token, $job->id)) {
 		echo '{"error":"Job doesn\'t exist or you are not authorized."}';

@@ -63,12 +63,10 @@ function addJob() {
 }
 
 
-function updateJob(id) {
-    console.log(id);
-    return;
+function updateJob() {
     $.ajax({
         type: 'PUT',
-	contentType: 'application/json',
+	contentType: 'application/json;charset=UTF-8',
         url: backendURL,
         dataType: 'json',
         data: updateToJSON(),
@@ -87,13 +85,12 @@ function updateJob(id) {
 
 function deleteJob(id) {
     console.log(id);
-    return;
     $.ajax({
         type: 'DELETE',
 	contentType: 'application/json',
         url: backendURL,
         dataType: 'json',
-        data: id,  // put job id here. 
+        data: JSON.stringify({"id":id}),  // put job id here. 
         success: function(data, textStatus, jqXHR){
 		if (data['error']!=null) {
                         // TODO: need a nice window here.
@@ -108,7 +105,7 @@ function deleteJob(id) {
 
 
 function getJobs() {
-    //$("#left_inner").html("");
+    $("#left_inner").html("");
     $.ajax({
 	    type: 'GET',
         dataType: 'json',
@@ -173,7 +170,7 @@ function makeEditable() {
 
 function saveChanges() {
     updateToJSON();
-    alert('1');
+    //alert('1');
 }
 
 //LINKED IN API CALLS
@@ -224,3 +221,4 @@ function getConnections(company_name_in) {
         
     })
 }
+
