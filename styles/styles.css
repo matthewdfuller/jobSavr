@@ -7,7 +7,8 @@ html, body {
 }
 
 .textboxer {
-    
+    border: 1px solid #C1C1C1;
+    font-size: 14pt;
 }
 
 #topbar {
@@ -34,6 +35,14 @@ html, body {
     float: right;
     margin-top: 10px;
     margin-right: 40px;
+}
+
+#profiles {
+    color: white;
+    font-family: 'Ruda', sans-serif;
+    font-size: 12pt;
+    margin-top: -15px;
+    margin-right: 10px;
 }
 
 #left {
@@ -115,10 +124,11 @@ html, body {
 
 #add_job_inner_box {
     width: 500px;
-    height: 500px;
+    height: 280px;
     margin-left: auto;
     margin-right: auto;
-    background-color: #EDEDED;
+    background: url('../images/right_bg.png');
+    background-repeat: repeat;
     padding: 10px;
     text-align: center;
     -moz-box-shadow: 0 0 5px 5px #888;
@@ -127,7 +137,13 @@ html, body {
     font-family: 'Ruda', sans-serif;
     font-weight: 200;
     color: #303030;
-    line-height: 1.8;
+    line-height: 2.8;
+}
+
+#add_job_inner_heading {
+    font-family: 'Ruda', sans-serif;
+    font-size: 20pt;
+    color: #303030;
 }
 
 #posting {
@@ -141,13 +157,22 @@ html, body {
 #posting_top {
 
     background-color: #EDEDED;
-    height: 40px;
+    height: 55px;
     border-bottom: 1px solid #DCDCDC;
     font-family: 'Ruda', sans-serif;
     font-size: 20pt;
     color: #303030;
     padding-left: 10px;
     padding-top: 10px;
+}
+
+#posting_top a:link {text-decoration: none; color: #0195C2;}
+#posting_top a:visited {text-decoration: none; color: #0195C2;}
+#posting_top a:active {text-decoration: none; color: #0195C2;}
+#posting_top a:hover {text-decoration: underline; color: #0195C2;}
+
+#posting_url {
+    font-size: 10pt;
 }
 
 #posting_content {
@@ -157,7 +182,48 @@ html, body {
     border: 1px solid #DCDCDC;
 }
 
+#posting_under {
+    font-family: 'Ruda', sans-serif;
+    font-size: 15pt;
+    height: 90%;
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+
+/*SECTIONS IN THE POSTING CONTENT BOX*/
+#company_profile {
+    float: left;
+    width: 65%;
+    margin: 10px;
+}
+
+#company_extras {
+    float: right;
+    width: 30%;
+    margin: 10px;
+}
+.posting_header {
+    border-bottom: 1px solid #DCDCDC;
+    margin-bottom: 5px;
+}
+
+.posting_section {
+    font-size: 11pt;
+    font-weight: 100;
+    font-family: sans-serif;
+}
+
+#posting_description {
+    text-overflow:ellipsis;
+    
+}
+
+.spacer {
+    height: 30px;
+}
+
 #none_selected {
+    display: none;
     width: 70%;
     margin-left: auto;
     margin-right: auto;
