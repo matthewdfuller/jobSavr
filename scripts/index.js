@@ -21,6 +21,14 @@ function displayProfiles(profiles) {
 }
 
 
+function handleError(data) {
+    if (data.error) {
+        console.log(data.error);
+        return true;
+    }
+    return false;
+}
+
 function formToJSON() {
     return JSON.stringify({
 	"url": $('#add_form_url').val(),
@@ -47,12 +55,7 @@ function addJob() {
 	dataType: 'json',
 	data: formToJSON(),
 	success: function(data, textStatus, jqXHR){
-		if (data['error']!=null) {
-			// TODO: need a nice window here.
-			//alert(data['error']);
-                        //document.getElementById('error_outer_box').style.display="block";
-                        //document.getElementById('add_error').innerHTML=data['error'];
-		}
+        if (handleError(data)) return;
 	},
 	error: function(jqXHR, textStatus, errorThrown){
 		//alert('add job error: ' + textStatus);
@@ -66,15 +69,12 @@ function addJob() {
 function updateJob() {
     $.ajax({
         type: 'PUT',
-	contentType: 'application/json;charset=UTF-8',
+	contentType: 'application/json',
         url: backendURL,
         dataType: 'json',
         data: updateToJSON(),
         success: function(data, textStatus, jqXHR){
-		if (data['error']!=null) {
-                        // TODO: need a nice window here.
-                        alert(data['error']);
-                }
+            if (handleError(data)) return;
         },
         error: function(jqXHR, textStatus, errorThrown){
 		alert('update job error: ' + textStatus);
@@ -87,18 +87,15 @@ function deleteJob(id) {
     console.log(id);
     $.ajax({
         type: 'DELETE',
-	contentType: 'application/json',
+	    contentType: 'application/json',
         url: backendURL,
         dataType: 'json',
         data: JSON.stringify({"id":id}),  // put job id here. 
         success: function(data, textStatus, jqXHR){
-		if (data['error']!=null) {
-                        // TODO: need a nice window here.
-                        alert(data['error']);
-                }
+            if (handleError(data)) return;
         },
         error: function(jqXHR, textStatus, errorThrown){
-		alert('delete job error: ' + textStatus);
+		    alert('delete job error: ' + textStatus);
         }
     });
 }
@@ -111,7 +108,8 @@ function getJobs() {
         dataType: 'json',
         url: backendURL,
         success: function(data){
-            console.log(data);
+            if (handleError(data)) return;
+
             var list = data == null ? [] : (data.jobs instanceof Array ? data.jobs : [data.jobs]);
 	        $.each(list, function(index, job) {
 		        $("#left_inner").append("<div id=\"job_" + job['id'] + "\" class=\"left_listing\" onclick=\"updateRight(this)\"><div class=\"listing_title\">" + job['title'] + "</div><div class=\"listing_company\">" + job['company'] + "</div></div>");
@@ -157,10 +155,6 @@ function updateRight(elem) {
     getCompanyInfo($(elem).data("job_info").company_name);
     //getConnections(li_company_name);
 }
-
-$(function() {
-   $('#editable_description').autogrow();
-});
 
 //MakeEditable makes textboxes editable
 var editing = false;
