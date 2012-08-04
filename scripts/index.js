@@ -84,7 +84,7 @@ function deleteJob(id) {
 	contentType: 'application/json',
         url: backendURL,
         dataType: 'json',
-        data: id,  // pull job id here. 
+        data: id,  // put job id here. 
         success: function(data, textStatus, jqXHR){
 		if (data['error']!=null) {
                         // TODO: need a nice window here.
@@ -108,7 +108,7 @@ function getJobs() {
             console.log(data);
             var list = data == null ? [] : (data.jobs instanceof Array ? data.jobs : [data.jobs]);
 	        $.each(list, function(index, job) {
-		        $("#left_inner").append("<div id=\"job_" + job['id'] + "\" class=\"left_listing\" onclick=\"updateRight(this)\"><div class=\"listing_title\">" + job['title'] + "</div><div class=\"listing_company\">" + job['company'] + "</div><div class=\"listing_edit\"><img src=\"images/edit.jpg\" onclick=updateJob(" + job['id'] + ")></img></div><div class=\"listing_del\"><img src=\"images/del.jpg\" onclick=deleteJob(" + job['id'] + ")></img></div></div>");
+		        $("#left_inner").append("<div id=\"job_" + job['id'] + "\" class=\"left_listing\" onclick=\"updateRight(this)\"><div class=\"listing_title\">" + job['title'] + "</div><div class=\"listing_company\">" + job['company'] + "</div></div>");
                 $("#job_" + job.id).data("job_info", {
                     job_title: job['title'],
                     company_name: job['company'],
