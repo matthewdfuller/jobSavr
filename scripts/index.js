@@ -87,7 +87,7 @@ function updateJob() {
 function deleteJob() {
     $.ajax({
         type: 'DELETE',
-	    contentType: 'application/json',
+	contentType: 'application/json',
         url: backendURL,
         dataType: 'json',
         data: JSON.stringify({
