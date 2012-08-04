@@ -1,8 +1,80 @@
-  <form name="add_job" id="jobsavr_add_job" action="" method="post">
+<html>
+  <head>
+    <script type="text/javascript" src="https://platform.linkedin.com/in.js">
+        api_key: l3bpklmxvfcp
+        authorize: true
+        credentials_cookie: true
+    </script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script>
+    var backendURL = 'https://localhost/backend/index.php';
+
+    function getURLParameter(name) {
+    return decodeURI(
+        (RegExp(name + '=' + '(.+?)(&|$)').exec(location.search)||[,null])[1]
+    );
+    }
+
+    $('body').ready(function () {
+        $('#add_form_url').val(decodeURIComponent(location.search.replace(/^\?/, '')));
+    
+    $('#jobsavr_add_job').submit(function() {
+    $.ajax({
+	    type: 'POST',
+	    contentType: 'application/json;charset=UTF-8',
+	    url: backendURL,
+	    dataType: 'json',
+	    data: formToJSON(),
+	    success: function(data, textStatus, jqXHR){
+            if (handleError(data)) return;
+    if (parent && parent.postMessage) {
+    parent.postMessage("closed", "*");
+    }
+	    },
+	    error: function(jqXHR, textStatus, errorThrown){
+		    //alert('add job error: ' + textStatus);
+    //document.getElementById('error_outer_box').innerHTML="";
+    if (parent && parent.postMessage) {
+    parent.postMessage("closed", "*");
+    }
+	    }
+    });
+    return false;
+    });
+      });
+
+function formToJSON() {
+    return JSON.stringify({
+	    "url": $('#add_form_url').val(),
+	    "title": $('#add_form_title').val(),
+	    "company": $('#add_form_company_name').val(),
+	    "description": $('#add_form_description').val()
+    });
+}
+
+function handleError(data) {
+    if (data.error) {
+        console.log(data.error);
+        return true;
+    }
+    return false;
+}
+
+
+      </script>
+  </head>
+  <body>
+    <script type="in/Login">
+      Hello, <?js= firstName ?> <?js= lastName ?>.
+    </script>
+    <form name="add_job" id="jobsavr_add_job" action="" method="post">
 	  Company Name: <input type="text" id="add_form_company_name" name="com_name" /><br/>
 	  <input type="hidden" id="add_form_url" name="com_url" />
 	  Job title: <input type="text" id="add_form_title" name="job_title" /><br/>
 	  Location: <input type="text" id="add_form_location" name="location" /><br/>
       Description: <textarea id="add_form_description" name="description"></textarea><br/>
 	  <input type="submit" value="Add A New Job" />
-  </form>
+    </form>
+  </body>
+</html>
+

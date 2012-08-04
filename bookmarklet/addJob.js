@@ -1,5 +1,12 @@
-var appURL = 'https://rinon.info/jobsavr';
-var backendURL = 'https://rinon.info/jobsavr/backend/index.php';
+var prod = false;
+
+if (prod) {
+    var appURL = 'https://rinon.info/jobsavr';
+    var backendURL = 'https://rinon.info/jobsavr/backend/index.php';
+} else {
+    var appURL = 'https://localhost';
+    var backendURL = 'https://localhost/backend/index.php';
+}
 
 var s=document.createElement('script');
 s.setAttribute('type','text/javascript');
@@ -13,6 +20,7 @@ document.documentElement.appendChild(s);
 // popupRequest.send();
 
 var popup = document.createElement('div');
+popup.id = 'jobsavr_popup';
 popup.style.width = '30em';
 popup.style['margin-left'] = 'auto';
 popup.style['margin-right'] = 'auto';
@@ -27,31 +35,21 @@ popup.style['font-weight'] = '200';
 popup.style['color'] = '#303030';
 popup.style['line-height'] = '1.8';
 var iframe = document.createElement('iframe');
-iframe.src = appURL+'/bookmarklet/addjob.html';
+iframe.id = 'jobsavr_iframe';
+iframe.src = appURL+'/bookmarklet/addjob.html?' + encodeURIComponent(window.location);
 iframe.style.width = '30em';
+iframe.scolling = 'no';
 popup.appendChild(iframe);
 
 
-$("input[name='com_url']", popup).val(window.location);
 $('body').prepend(popup);
-$('#jobsavr_add_job').submit(function() {
-    $.ajax({
-	    type: 'POST',
-	    contentType: 'application/json;charset=UTF-8',
-	    url: backendURL,
-	    dataType: 'json',
-	    data: formToJSON(),
-	    success: function(data, textStatus, jqXHR){
-            if (handleError(data)) return;
-	    },
-	    error: function(jqXHR, textStatus, errorThrown){
-		    //alert('add job error: ' + textStatus);
-            document.getElementById('error_outer_box').innerHTML="";
-	    }
-    });
-    return false;
-    $(popup).remove();
-});
+
+window.onmessage = function(event) {
+  if (event.data === "closed") {
+      $('#jobsavr_popup').remove();
+  }
+};
+
 
 function formToJSON() {
     return JSON.stringify({
