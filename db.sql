@@ -36,6 +36,7 @@ CREATE TABLE `jobs` (
   `url` text,
   `title` varchar(255) DEFAULT NULL,
   `company` varchar(255) DEFAULT NULL,
+  `description` text,
   PRIMARY KEY (`id`),
   KEY `id` (`id`),
   KEY `user_token` (`user_token`)

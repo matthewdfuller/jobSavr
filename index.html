@@ -6,6 +6,11 @@
     <link href="styles/styles.css" rel="stylesheet" type="text/css">
     <link href='http://fonts.googleapis.com/css?family=Ruda:400,900' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=Averia+Sans+Libre:700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="styles/gh-buttons.css">
+        
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script type="text/javascript" src="scripts/addjob.js"></script>
+    <script type="text/javascript" src="scripts/index.js"></script>
         
     <!--LINKED IN JS -->
     <script type="text/javascript" src="http://platform.linkedin.com/in.js">
@@ -186,16 +191,28 @@
     </div>
     <div id="right">
         <div id="posting">
-            
+            <div id="add_job">
+                <a href="#" class="button big add" onclick="addJob()">Add New Job</a>
+            </div>
             <div id="posting_content">
                 <div id="posting_top">
-                
-            </div>
+                    Hello       
+                </div>
                 <div id="none_selected">
                     Select a job to see details here.
                 </div>
             </div>
         </div>	
+    </div>
+    
+    <div id="add_job_outer_box">
+        <div id="add_job_inner_box">
+            <form>
+                Enter Posting URL: <input type="text"></input><br/>
+                Enter Job Title: <input type="text"></input><br/>
+                Enter Company Name: <input type="text"></input><br/>
+            </form>
+        </div>
     </div>
 </body>
 </html>

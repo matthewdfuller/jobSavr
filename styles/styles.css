@@ -6,6 +6,10 @@ html, body {
     height: 100%;
 }
 
+.textboxer {
+    
+}
+
 #topbar {
     border-bottom: 1px solid black;
     background-color: #303030;
@@ -38,7 +42,7 @@ html, body {
     margin-left: 10px;
     border: 0px solid red;
     padding: 10px;
-    height: 95%;
+    height: 93%;
 }
 
 #my_jobs_text {
@@ -85,6 +89,7 @@ html, body {
     color: #999;
 }
 
+/* RIGHT HAND SIDE */
 #right {
     background-repeat: repeat;
     width: 78%;
@@ -92,10 +97,43 @@ html, body {
     float: right;
 }
 
+#add_job {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    text-align: center;
+    font-family: "Averia Sans Libre", cursive;
+    font-weight: 700;
+}
+
+#add_job_outer_box {
+    width: 100%;
+    height: 500px;
+    position: absolute;
+    top: 0px;
+    display: none;
+}
+
+#add_job_inner_box {
+    width: 500px;
+    height: 500px;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: #EDEDED;
+    padding: 10px;
+    text-align: center;
+    -moz-box-shadow: 0 0 5px 5px #888;
+    -webkit-box-shadow: 0 0 5px 5px#888;
+    box-shadow: 0 0 5px 5px #888;
+    font-family: 'Ruda', sans-serif;
+    font-weight: 200;
+    color: #303030;
+    line-height: 1.8;
+}
+
 #posting {
     width: 93%;
     height: 93%;
-    margin-top: 79px;
+    
     margin-left: auto;
     margin-right: auto;
 }
@@ -103,8 +141,13 @@ html, body {
 #posting_top {
 
     background-color: #EDEDED;
-    height: 50px;
+    height: 40px;
     border-bottom: 1px solid #DCDCDC;
+    font-family: 'Ruda', sans-serif;
+    font-size: 20pt;
+    color: #303030;
+    padding-left: 10px;
+    padding-top: 10px;
 }
 
 #posting_content {
