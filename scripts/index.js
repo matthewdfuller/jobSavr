@@ -30,6 +30,15 @@ function formToJSON() {
     });
 }
 
+function updateToJSON() {
+    return JSON.stringify({
+        "id": $('#hidden_id').val(),
+	"title": $('#editable_post_title').val(),
+	"company": $('#editable_post_company').val(),
+	"description": $('#editable_description').val()
+    });
+}
+
 function addJob() {
     $.ajax({
 	type: 'POST',
@@ -62,7 +71,7 @@ function updateJob(id) {
 	contentType: 'application/json',
         url: backendURL,
         dataType: 'json',
-        data: formToJSON(),
+        data: updateToJSON(),
         success: function(data, textStatus, jqXHR){
 		if (data['error']!=null) {
                         // TODO: need a nice window here.
@@ -99,7 +108,7 @@ function deleteJob(id) {
 
 
 function getJobs() {
-    $("#left_inner").html("");
+    //$("#left_inner").html("");
     $.ajax({
 	    type: 'GET',
         dataType: 'json',
@@ -110,6 +119,7 @@ function getJobs() {
 	        $.each(list, function(index, job) {
 		        $("#left_inner").append("<div id=\"job_" + job['id'] + "\" class=\"left_listing\" onclick=\"updateRight(this)\"><div class=\"listing_title\">" + job['title'] + "</div><div class=\"listing_company\">" + job['company'] + "</div></div>");
                 $("#job_" + job.id).data("job_info", {
+                    job_id: job['id'],
                     job_title: job['title'],
                     company_name: job['company'],
                     url: job['url'],
@@ -143,14 +153,28 @@ function updateRight(elem) {
     $(currently_highlighted).toggleClass('left_listing_clicked');
     currently_highlighted = elem;
     
-    document.getElementById('posting_title').innerHTML=$(elem).data("job_info").job_title + " // " + $(elem).data("job_info").company_name;
+    document.getElementById('posting_title').innerHTML="<input id=\"editable_post_title\" class=\"editable\" onBlur=\"saveChanges()\" type=\"text\" value=\"" + $(elem).data("job_info").job_title + "\"/>" + " <br/><div id=\"posting_top_company_name\">" + "<input id=\"editable_post_company\"class=\"editable\" onBlur=\"saveChanges()\" type=\"text\" value=\"" + $(elem).data("job_info").company_name + "\"/></div>";
     document.getElementById('posting_url').innerHTML= "<a href=\"" + $(elem).data("job_info").url + "\">" + $(elem).data("job_info").url + "</a>";
-    document.getElementById('posting_description').innerHTML= $(elem).data("job_info").desc;
+    document.getElementById('posting_description').innerHTML="<input id=\"hidden_id\" type=\"hidden\" value=\"" + $(elem).data("job_id") + "\"/><textarea id=\"editable_description\" class=\"editable_textarea\" onBlur=\"saveChanges()\">" + $(elem).data("job_info").desc + "</textarea>";
     
     getCompanyInfo($(elem).data("job_info").company_name);
     //getConnections(li_company_name);
 }
 
+$(function() {
+   $('#editable_description').autogrow();
+});
+
+//MakeEditable makes textboxes editable
+var editing = false;
+function makeEditable() {
+    editing = true;
+}
+
+function saveChanges() {
+    updateToJSON();
+    alert('1');
+}
 
 //LINKED IN API CALLS
 

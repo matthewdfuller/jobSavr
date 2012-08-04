@@ -21,6 +21,17 @@ a:hover {text-decoration: underline; color: #0195C2;}
     height: 50px;
 }
 
+.editable {
+    font-family: 'Ruda', sans-serif;
+    font-size: 20pt;
+    color: #303030;
+    width: 100%;
+    padding: 0px;
+    margin: 0px;
+    border: 0px;
+    background-color: #EDEDED;
+}
+
 #topbar {
     border-bottom: 1px solid black;
     background-color: #303030;
@@ -189,13 +200,17 @@ a:hover {text-decoration: underline; color: #0195C2;}
 #posting_top {
 
     background-color: #EDEDED;
-    height: 55px;
+    height: 85px;
     border-bottom: 1px solid #DCDCDC;
     font-family: 'Ruda', sans-serif;
     font-size: 20pt;
     color: #303030;
     padding-left: 10px;
     padding-top: 10px;
+}
+
+#posting_top_company_name input{
+    color: #888888;
 }
 
 #job_top_headline {
@@ -253,6 +268,15 @@ a:hover {text-decoration: underline; color: #0195C2;}
 #posting_description {
     text-overflow:ellipsis;
     
+}
+
+.editable_textarea {
+    font-size: 11pt;
+    font-weight: 100;
+    font-family: sans-serif;
+    border: 0px;
+    width: 100%;
+    height: auto;
 }
 
 .spacer {
