@@ -21,6 +21,12 @@ function test() {
 	echo 'hello world';
 }
 
+function retrieve_member_id($cookies) {
+	//$cookie = (string)$cookies;
+	//echo $cookie;
+	return "FUq3ksMk9b";
+}
+
 function getJobs() {
 	global $app;
 	$request = Slim::getInstance()->request();
@@ -45,7 +51,8 @@ function getJobs() {
 function addJob() {
 	global $app;
 	$request = Slim::getInstance()->request();
-	$token = $app->getCookie('token');
+	$token = retrieve_member_id($app->request()->cookies());
+	
 	$job = json_decode($request->getBody());
 	if (checkJob($job->url, $token)) {
 		echo '{"error":{"text":"The job already exists."}}';
@@ -55,6 +62,7 @@ function addJob() {
 	try {
 		$db = connect();
 		$stmt = $db->prepare($sql);
+		#$stmt->bindParam("token", $token);
 		$stmt->bindParam("token", $token);
 		$stmt->bindParam("url", $job->url);
 		$stmt->bindParam("title", $job->title);
@@ -164,9 +172,12 @@ function verify($token, $id) {
 
 function connect() {
 	$dbhost="localhost";
-	$dbuser="cranecon_jobsavr";
-	$dbpass="cee-j6AH3quu";
-	$dbname="cranecon_jobsavr";
+	$dbuser="root";
+	$dbpass="mozilla_oakwood";
+	$dbname="jobsavr";
+	//$dbuser="cranecon_jobsavr";
+	//$dbname="cranecon_jobsavr";
+	//$dbpass="cee-j6AH3quu";
 	$dbh = new PDO("mysql:host=$dbhost;dbname=$dbname", $dbuser, $dbpass);	
 	$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	return $dbh;

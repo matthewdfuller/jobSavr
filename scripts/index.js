@@ -25,7 +25,7 @@ function formToJSON() {
     return JSON.stringify({
 	"url": $('#add_form_url').val(),
 	"title": $('#add_form_title').val(),
-	"company_name": $('#add_form_company_name').val(),
+	"company": $('#add_form_company_name').val(),
 	"description": $('#add_form_description').val()
     });
 }
@@ -33,8 +33,8 @@ function formToJSON() {
 function addJob() {
     $.ajax({
 	type: 'POST',
-	contentType: 'application/json',
-	url: rootURL,
+	contentType: 'application/json;charset=UTF-8',
+	url: backendURL,
 	dataType: 'json',
 	data: formToJSON(),
 	success: function(data, textStatus, jqXHR){
@@ -48,6 +48,7 @@ function addJob() {
 		alert('add job error: ' + textStatus);
 	}
     });
+    getJobs();
 }
 
 
@@ -55,7 +56,7 @@ function updateJob() {
     $.ajax({
         type: 'PUT',
 	contentType: 'application/json',
-        url: rootURL,
+        url: backendURL,
         dataType: 'json',
         data: formToJSON(),
         success: function(data, textStatus, jqXHR){
@@ -76,7 +77,7 @@ function deleteJob() {
     $.ajax({
         type: 'DELETE',
 	contentType: 'application/json',
-        url: rootURL,
+        url: backendURL,
         dataType: 'json',
         data: id,  // pull job id here. 
         success: function(data, textStatus, jqXHR){
