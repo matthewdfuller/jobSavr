@@ -3,6 +3,11 @@ function addJob() {
     var visible = true;
 }
 
+function closePopup() {
+    document.getElementById('add_job_outer_box').style.display="none";
+    var visible = false;
+}
+
 /*
 function monitorClick(e){
         var evt = (e)?e:event;
