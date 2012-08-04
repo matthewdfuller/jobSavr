@@ -55,7 +55,7 @@
 		</div>
 	    </div>
             <script type="text/javascript">
-                $('#job_10').data("job_info", { job_title:"Security Engineer", company_name:"Mozilla", url:"http://mozilla.com/jobs/posting/203032dddddd22d22d3dd9x9",desc:"Sample description"});
+                $('#job_10').data("job_info", { title:"Security Engineer", company:"Mozilla", url:"http://mozilla.com/jobs/posting/203032dddddd22d22d3dd9x9",desc:"Sample description"});
             </script>
             
             <div id="job_11" class="left_listing" onclick="updateRight(this)">
@@ -67,7 +67,7 @@
 		</div>
 	    </div>
             <script type="text/javascript">
-                $('#job_11').data("job_info", { job_title:"IT Security Analyst", company_name:"Google, Inc.", url:"http://google.com/jobs/posting/2030329x9"});
+                $('#job_11').data("job_info", { title:"IT Security Analyst", company:"Google, Inc.", url:"http://google.com/jobs/posting/2030329x9"});
             </script>
             
          
@@ -152,36 +152,7 @@
                             Twitter Feed <span id="company_twitter"></span>
                         </div>
                         <div class="posting_section">
-                            
-                                <script>
-                                new TWTR.Widget({
-                                  version: 2,
-                                  type: 'search',
-                                  search: 'rainbow',
-                                  interval: 30000,
-                                  title: '',
-                                  subject: '',
-                                  width: 350,
-                                  height: 300,
-                                  theme: {
-                                    shell: {
-                                      background: '#8ec1da',
-                                      color: '#ffffff'
-                                    },
-                                    tweets: {
-                                      background: '#ffffff',
-                                      color: '#444444',
-                                      links: '#1985b5'
-                                    }
-                                  },
-                                  features: {
-                                    scrollbar: true,
-                                    loop: true,
-                                    live: true,
-                                    behavior: 'default'
-                                  }
-                                }).render().start();
-                                </script>
+                            <span id="twitter_feed"></span>
                         </div>
                         
                     </div>

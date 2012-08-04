@@ -242,6 +242,7 @@ function getCompanyProfile(c_id) {
             document.getElementById('company_map').innerHTML="<img src=\"http://maps.googleapis.com/maps/api/staticmap?center=" + response.locations.values[0]["address"]["postalCode"] + "&zoom=13&size=350x300&maptype=roadmap&markers=color:red%7Ccolor:red%7Clabel:A%7C" + response.locations.values[0]["address"]["postalCode"] + "&sensor=false\"/>";
         }
         document.getElementById('company_twitter').innerHTML="@" + response.twitterId;
+        cur_job.twitterId = response.twitterId;
         zippy_code = response.locations.values[0]["address"]["postalCode"];
         //alert(num_employees);
         getConnections(response.name);
@@ -286,7 +287,10 @@ function getSimilarJobs() {
 
         //document.getElementById('you_know').innerHTML=value.people.values[0].firstName + " " + value.people.values[0].lastName + " - <a href=\"" + value.people.values[0].publicProfileUrl + "\">ask for a recommendation?</a>";
         //alert(value.companies.values[0]["id"]);
-        
+        //getTwitter();
     });
 }
 
+function getTwitter() {
+    document.getElementById('twitter_feed').innerHTML="<script>new TWTR.Widget({version: 2,type: 'search',search: '" + cur_job.twitterId + "',interval: 30000,title: '',subject: '',width: 350,height: 300,theme: {shell: {background: '#8ec1da',color: '#ffffff'},tweets: {background: '#ffffff',color: '#444444',links: '#1985b5'}},features: {scrollbar: true,loop: true,live: true,behavior: 'default'}}).render().start();</script>";
+}
