@@ -90,8 +90,9 @@ function deleteJob() {
 	contentType: 'application/json',
         url: backendURL,
         dataType: 'json',
-        data: JSON.stringify({
-            "id": $('#hidden_id').val()}),  // put job id here.
+        data: JSON.stringify(cur_job),
+        //data: JSON.stringify({
+        //   "id": $('#hidden_id').val()}),  // put job id here.
         success: function(data, textStatus, jqXHR){
             if (handleError(data)) return;
         },
@@ -110,7 +111,7 @@ function deleteJob() {
 
 
 function getJobs() {
-    //$("#left_inner").html("");
+    $("#left_inner").html("");
     $.ajax({
 	    type: 'GET',
         dataType: 'json',
@@ -254,7 +255,7 @@ function getConnections(company_name_in) {
     IN.API.Raw('/people-search:(people:(first-name,last-name,public-profile-url,picture-url))?company-name=' + company_name_in + '&facet=network,F')
     //IN.API.Raw('/people/~/connections:(first-name,last-name,positions)?company-name=mozilla-corporation')
     .result(function(value) {
-        alert(JSON.stringify(value));
+        //alert(JSON.stringify(value));
         document.getElementById('you_know').innerHTML="";
         if (value.people.values) {
             $.each(value.people.values, function(index, person) {
