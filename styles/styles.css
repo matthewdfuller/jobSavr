@@ -256,6 +256,9 @@ a:hover {text-decoration: underline; color: #0195C2;}
     height: 90%;
     overflow-x: hidden;
     overflow-y: scroll;
+    background-color: white;
+    border: 1px solid #DCDCDC;
+    border-top: 0px;
 }
 
 /*SECTIONS IN THE POSTING CONTENT BOX*/
