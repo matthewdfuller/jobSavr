@@ -41,9 +41,9 @@ function formToJSON() {
 function updateToJSON() {
     return JSON.stringify({
         "id": $('#hidden_id').val(),
-	"title": $('#editable_post_title').val(),
-	"company": $('#editable_post_company').val(),
-	"description": $('#editable_description').val()
+	    "title": $('#editable_post_title').val(),
+	    "company": $('#editable_post_company').val(),
+	    "description": $('#editable_description').val()
     });
 }
 
@@ -72,12 +72,12 @@ function updateJob() {
 	contentType: 'application/json',
         url: backendURL,
         dataType: 'json',
-        data: updateToJSON(),
+        data: JSON.stringify(cur_job),
         success: function(data, textStatus, jqXHR){
             if (handleError(data)) return;
         },
         error: function(jqXHR, textStatus, errorThrown){
-		//alert('update job error: ' + textStatus);
+		    alert('update job error: ' + textStatus);
         }
     });
     
@@ -121,13 +121,7 @@ function getJobs() {
             var list = data == null ? [] : (data.jobs instanceof Array ? data.jobs : [data.jobs]);
 	        $.each(list, function(index, job) {
 		        $("#left_inner").append("<div id=\"job_" + job['id'] + "\" class=\"left_listing\" onclick=\"updateRight(this)\"><div class=\"listing_title\">" + job['title'] + "</div><div class=\"listing_company\">" + job['company'] + "</div></div>");
-                $("#job_" + job.id).data("job_info", {
-                    job_id: job['id'],
-                    job_title: job['title'],
-                    company_name: job['company'],
-                    url: job['url'],
-                    desc: job['description']
-                });
+                $("#job_" + job.id).data("job_info", job);
                 console.log($("#job_" + job.id).data());
             });
         },
@@ -140,7 +134,10 @@ function getJobs() {
 
 //Call onClick when job on left is clicked
 
+var cur_job = null;
+
 var currently_highlighted = "";
+var cur_job_id;
 var num_employees = "";
 var company_id = "";
 var founded_year = "";
@@ -158,17 +155,30 @@ function updateRight(elem) {
     $(elem).toggleClass('left_listing_clicked');
     $(currently_highlighted).toggleClass('left_listing_clicked');
     currently_highlighted = elem;
-    
-    document.getElementById('posting_title').innerHTML="<input id=\"editable_post_title\" class=\"editable\" onBlur=\"saveChanges()\" type=\"text\" value=\"" + $(elem).data("job_info").job_title + "\"/>" + " <br/><div id=\"posting_top_company_name\">" + "<input id=\"editable_post_company\"class=\"editable\" onBlur=\"saveChanges()\" type=\"text\" value=\"" + $(elem).data("job_info").company_name + "\"/></div>";
-    document.getElementById('posting_url').innerHTML= "<a href=\"" + $(elem).data("job_info").url + "\">" + $(elem).data("job_info").url + "</a>";
-    document.getElementById('posting_description').innerHTML="<input id=\"hidden_id\" type=\"hidden\" value=\"" + $(elem).data("job_info").job_id + "\"/><textarea id=\"editable_description\" class=\"editable_textarea\" onBlur=\"saveChanges()\">" + $(elem).data("job_info").desc + "</textarea>";
-    
-    getCompanyInfo($(elem).data("job_info").company_name);
+    cur_job = $(elem).data('job_info');
+
+    console.log(cur_job);
+    document.getElementById('posting_title').innerHTML="<input id=\"editable_post_title\" class=\"editable\" onBlur=\"saveChanges()\" type=\"text\" value=\"" + cur_job.title + "\"/>" + " <br/><div id=\"posting_top_company_name\">" + "<input id=\"editable_post_company\"class=\"editable\" onBlur=\"saveChanges()\" type=\"text\" value=\"" + cur_job.company + "\"/></div>";
+    document.getElementById('posting_url').innerHTML= "<a href=\"" + cur_job.url + "\">" + cur_job.url + "</a>";
+    document.getElementById('posting_description').innerHTML="<input id=\"hidden_id\" type=\"hidden\" value=\"" + cur_job.job_id + "\"/><input id=\"company_id\" type=\"hidden\" value=\"" + cur_job.company_id + "\"/><textarea id=\"editable_description\" class=\"editable_textarea\" onBlur=\"saveChanges()\">" + cur_job.desc + "</textarea>";
+
+    if (!cur_job.company_id) {
+        getCompanyInfo(cur_job.company);
+    } else {
+        getCompanyProfile(cur_job.company_id);
+    }
     //getConnections(li_company_name);
 }
 
 //MakeEditable makes textboxes editable
 function saveChanges() {
+    cur_job = {
+        "id": cur_job.id,
+	    "title": $('#editable_post_title').val(),
+	    "company": $('#editable_post_company').val(),
+	    "company_id": cur_job.company_id,
+	    "description": $('#editable_description').val()
+    };
     updateJob();
 }
 
@@ -180,15 +190,44 @@ function getCompanyInfo(company_name) {
     .result(function(value) {
         //alert(JSON.stringify(value));
         //alert(value.companies.values[0]["id"]);
-        company_id = value.companies.values[0]["id"];
-        getCompanyProfile(value.companies.values[0]["id"]);
+        showCompanyResults(value.companies.values);
+        // company_id = value.companies.values[0]["id"];
+        // getCompanyProfile(value.companies.values[0]["id"]);
     })
+    .error(function(error) {
+        console.log(error);
+    });
+}
+
+function showCompanyResults(companies) {
+    var contents = '<div id="company_search_results"><ul>';
+    companies.map(function(company) {
+        contents += '<li id="company_search-' + company.id + '" onclick="selectCompany(' + company.id + ');">' + company.name + '</li>';
+    });
+    contents += '<li id="company_search-none">Not Here</li></div>';
+    Shadowbox.open({
+        content:    contents,
+        player:     "html",
+        title:      "Did you mean?",
+        height:     600,
+        width:      420
+    });
+}
+
+function selectCompany(id) {
+    Shadowbox.close();
+    if (id !== 'none') {
+        cur_job.company_id = id;
+        updateJob();
+        getCompanyProfile(id);
+    }
 }
 
 function getCompanyProfile(c_id) {
     var url = "/companies/" + c_id + ":(name,description,website-url,twitter-id,employee-count-range,founded-year,locations:(address:(city,state,postal-code)))";
     IN.API.Raw(url)
     .result(function(response) {
+        console.log(response);
         //alert(JSON.stringify(response));
         company_description = response.description;
         //li_company_name = response.name;
@@ -197,12 +236,17 @@ function getCompanyProfile(c_id) {
         document.getElementById('company_website').innerHTML=response.websiteUrl;
         document.getElementById('year_founded').innerHTML=response.foundedYear;
         document.getElementById('company_description').innerHTML=response.description;
-        document.getElementById('company_location').innerHTML=response.locations.values[0]["address"]["city"] + ", " + response.locations.values[0]["address"]["state"] + " " + response.locations.values[0]["address"]["postalCode"];
-        zippy_code = response.locations.values[0]["address"]["postalCode"];
+        if (response.locations.values) {
+            document.getElementById('company_location').innerHTML=response.locations.values[0]["address"]["city"] + ", " + response.locations.values[0]["address"]["state"] + " " + response.locations.values[0]["address"]["postalCode"];
+            document.getElementById('company_map').innerHTML="<img src=\"http://maps.googleapis.com/maps/api/staticmap?center=" + response.locations.values[0]["address"]["postalCode"] + "&zoom=13&size=350x300&maptype=roadmap&markers=color:red%7Ccolor:red%7Clabel:A%7C" + response.locations.values[0]["address"]["postalCode"] + "&sensor=false\"/>";
+        }
         document.getElementById('company_twitter').innerHTML="@" + response.twitterId;
-        document.getElementById('company_map').innerHTML="<img src=\"http://maps.googleapis.com/maps/api/staticmap?center=" + response.locations.values[0]["address"]["postalCode"] + "&zoom=13&size=350x300&maptype=roadmap&markers=color:red%7Ccolor:red%7Clabel:A%7C" + response.locations.values[0]["address"]["postalCode"] + "&sensor=false&key=AIzaSyDvu0UwsVzVEQRsS-XYM07uk00CQ4GVDNw\"/>";
+        zippy_code = response.locations.values[0]["address"]["postalCode"];
         //alert(num_employees);
         getConnections(response.name);
+    })
+    .error(function(error) {
+        console.log(error);
     });
 }
 
@@ -212,19 +256,21 @@ function getConnections(company_name_in) {
     .result(function(value) {
         //alert(JSON.stringify(value));
         document.getElementById('you_know').innerHTML="";
-        $.each(value.people.values, function(index, person) {
+        if (value.people.values) {
+            $.each(value.people.values, function(index, person) {
                 //alert(person.firstName);
                 document.getElementById('you_know').innerHTML+=person.firstName + " " + person.lastName + " - <a href=\"" + person.publicProfileUrl + "\">ask for a recommendation?</a><br/>";
-            })
+            });
+        }
 
         //document.getElementById('you_know').innerHTML=value.people.values[0].firstName + " " + value.people.values[0].lastName + " - <a href=\"" + value.people.values[0].publicProfileUrl + "\">ask for a recommendation?</a>";
         //alert(value.companies.values[0]["id"]);
         getSimilarJobs();
-    })
+    });
 }
 
 function getSimilarJobs() {
-    var in_job_title = $(element_pass).data("job_info").job_title;
+    var in_job_title = cur_job.title;
     //IN.API.Raw('/job-search?job-title=' + encodeURIComponent(in_job_title))
     IN.API.Raw('/job-search?keywords=' + encodeURIComponent(in_job_title))
     .result(function(value) {
@@ -235,11 +281,11 @@ function getSimilarJobs() {
         $.each(value.jobs.values, function(index, job) {
                 //alert(job.company["name"] + job.locationDescription);
                 document.getElementById('similar_jobs').innerHTML+=job.company["name"] + " - " + job.locationDescription + "<br/>";
-            })
+            });
 
         //document.getElementById('you_know').innerHTML=value.people.values[0].firstName + " " + value.people.values[0].lastName + " - <a href=\"" + value.people.values[0].publicProfileUrl + "\">ask for a recommendation?</a>";
         //alert(value.companies.values[0]["id"]);
         
-    })
+    });
 }
 

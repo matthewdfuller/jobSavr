@@ -19,9 +19,9 @@
 -- Current Database: `jobsavr`
 --
 
-CREATE DATABASE /*!32312 IF NOT EXISTS*/ `cranecon_jobsavr` /*!40100 DEFAULT CHARACTER SET utf8 */;
+CREATE DATABASE /*!32312 IF NOT EXISTS*/ `jobsavr` /*!40100 DEFAULT CHARACTER SET utf8 */;
 
-USE `cranecon_jobsavr`;
+USE `jobsavr`;
 
 --
 -- Table structure for table `jobs`
@@ -36,6 +36,7 @@ CREATE TABLE `jobs` (
   `url` text,
   `title` varchar(255) DEFAULT NULL,
   `company` varchar(255) DEFAULT NULL,
+  `company_id` int unsigned,
   `description` text,
   PRIMARY KEY (`id`),
   KEY `id` (`id`),

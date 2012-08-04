@@ -310,3 +310,29 @@ a:hover {text-decoration: underline; color: #0195C2;}
     text-align: center;
     margin-top: 100px;
 }
+
+
+/* Company search lightbox */
+
+#company_search_results {
+    background-color: #FFFFFF;
+    width: 400px;
+    /* height: 100%; */
+}
+
+#company_search_results ul {
+    padding: 0;
+    margin: 0;
+    height: 100%;
+}
+
+#company_search_results li {
+    cursor: pointer;
+    list-style: none;
+    padding: 0.5em;
+    border-bottom: 1px solid #000000;
+}
+
+#company_search_results #company_search-none {
+    bottom: 0;
+}
