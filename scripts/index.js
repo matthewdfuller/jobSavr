@@ -9,7 +9,7 @@ function getJobs() {
         success: function(data){
             var list = data == null ? [] : (json.data.jobs instanceof Array ? data.jobs : [data.jobs]);
 	    $.each(list, function(index, job) {
-		$("#left_inner").append("<div id=\"job_" + job['id'] + "\" class=\"left_listing\" onclick=\"updateJob(this)\"><div class=\"listing_title\">" + job['title'] + "</div><div class=\"listing_company\">" + job['company'] + "</div></div><script type=\"text/javascript\">$('#job_' + " + job['id'] + "').data(\"job_info\", { job_title:\"" + job['title'] + "\", company_name:\"" + job['company'] + "\", url:\"" + job['url'] + "\"});</script>");
+		$("#left_inner").append("<div id=\"job_" + job['id'] + "\" class=\"left_listing\" onclick=\"updateRight(this)\"><div class=\"listing_title\">" + job['title'] + "</div><div class=\"listing_company\">" + job['company'] + "</div></div><script type=\"text/javascript\">$('#job_' + " + job['id'] + "').data(\"job_info\", { job_title:\"" + job['title'] + "\", company_name:\"" + job['company'] + "\", url:\"" + job['url'] + "\"});</script>");
             }); 
         }
     });
@@ -19,7 +19,7 @@ function getJobs() {
 
 var currently_highlighted = "";
 
-function updateJob(elem) {
+function updateRight(elem) {
     $(elem).toggleClass('left_listing_clicked');
     $(currently_highlighted).toggleClass('left_listing_clicked');
     currently_highlighted = elem;
@@ -41,11 +41,16 @@ function updateDescription(desc) {
 
 function updateProfile(company_name) {
     document.getElementById('num_employees').innerHTML=getNumEmployees(company_name);
+    document.getElementById('company_website').innerHTML=getCompanyWebsite(company_name);
 }
 
 
 
 //LINKED IN API CALLS
+function getCompanyInfo(company_name) {
+    
+}
+
 function getNumEmployees(company_name) {
     //MAKE API CALL AND RETURN NUM_EMPLOYEES
     var num_employees = "200-500";

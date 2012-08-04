@@ -53,7 +53,7 @@
 <!--LEFT HAND PANEL WITH LISTS OF JOBS-->
     <div id="left">
 	<div id="left_inner">
-	    <div id="job_1" class="left_listing" onclick="updateJob(this)">
+	    <div id="job_1" class="left_listing" onclick="updateRight(this)">
                 <div class="listing_title">
 		    Security Engineer    
 		</div>
@@ -65,7 +65,7 @@
                 $('#job_1').data("job_info", { job_title:"Security Engineer", company_name:"Mozilla Corporation", url:"http://mozilla.com/jobs/posting/2030329x9"});
             </script>
             
-            <div id="job_2" class="left_listing" onclick="updateJob(this)">
+            <div id="job_2" class="left_listing" onclick="updateRight(this)">
                 <div class="listing_title">
 		    IT Security Analyst
 		</div>
@@ -116,6 +116,8 @@
                         </div>
                         <div class="posting_section">
                             Number of Employees: <span id="num_employees">200-400</span><br/>
+                            Company Website: <span id="company_website">http://mozilla.com</span><br/>
+                            Year Founded: <span id="year_founded">2003</span><br/>
                             Average Salary: $89,500<br/>
                         </div>
                         <div class="spacer"></div>
