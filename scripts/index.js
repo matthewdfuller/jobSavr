@@ -41,8 +41,8 @@ function addJob() {
 		if (data['error']!=null) {
 			// TODO: need a nice window here.
 			//alert(data['error']);
-                        document.getElementById('error_outer_box').style.display="block";
-                        document.getElementById('add_error').innerHTML=data['error'];
+                        //document.getElementById('error_outer_box').style.display="block";
+                        //document.getElementById('add_error').innerHTML=data['error'];
 		}
 	},
 	error: function(jqXHR, textStatus, errorThrown){
@@ -54,7 +54,9 @@ function addJob() {
 }
 
 
-function updateJob() {
+function updateJob(id) {
+    console.log(id);
+    return;
     $.ajax({
         type: 'PUT',
 	contentType: 'application/json',
@@ -74,7 +76,9 @@ function updateJob() {
 }
 
 
-function deleteJob() {
+function deleteJob(id) {
+    console.log(id);
+    return;
     $.ajax({
         type: 'DELETE',
 	contentType: 'application/json',
@@ -95,7 +99,7 @@ function deleteJob() {
 
 
 function getJobs() {
-    //$("#left_inner").html("");
+    $("#left_inner").html("");
     $.ajax({
 	    type: 'GET',
         dataType: 'json',
@@ -104,7 +108,7 @@ function getJobs() {
             console.log(data);
             var list = data == null ? [] : (data.jobs instanceof Array ? data.jobs : [data.jobs]);
 	        $.each(list, function(index, job) {
-		        $("#left_inner").append("<div id=\"job_" + job['id'] + "\" class=\"left_listing\" onclick=\"updateRight(this)\"><div class=\"listing_title\">" + job['title'] + "</div><div class=\"listing_company\">" + job['company'] + "</div></div>");
+		        $("#left_inner").append("<div id=\"job_" + job['id'] + "\" class=\"left_listing\" onclick=\"updateRight(this)\"><div class=\"listing_title\">" + job['title'] + "</div><div class=\"listing_company\">" + job['company'] + "</div><div class=\"listing_edit\"><img src=\"images/edit.jpg\" onclick=updateJob(" + job['id'] + ")></img></div><div class=\"listing_del\"><img src=\"images/del.jpg\" onclick=deleteJob(" + job['id'] + ")></img></div></div>");
                 $("#job_" + job.id).data("job_info", {
                     job_title: job['title'],
                     company_name: job['company'],

@@ -5,6 +5,7 @@ $app = new Slim();
 
 #$app->get('/index', 'test');
 $app->get('/', 'getJobs');
+//$app->get('/:id', 'getJobDesc');
 $app->post('/', 'addJob');
 $app->put('/', 'updateJob');
 $app->delete('/','deleteJob');
@@ -20,6 +21,21 @@ function test() {
 	}
 	echo 'hello world';
 }
+/*
+function getJobDesc($id) {
+	$sql = "SELECT description FROM jobs WHERE id=:id";
+        try {
+                $db = connect();
+                $stmt = $db->prepare($sql);
+                $stmt->bindParam("id", $id);
+                $stmt->execute();
+                $desc = $stmt->fetchObject();
+                $db = null;
+                echo json_encode($desc);
+        }catch(PDOException $e) {
+                echo '{"error":'. $e->getMessage() .'}';
+        }
+}*/
 
 function retrieve_member_id($cookies) {
 	$token = implode(' ', $cookies);
@@ -27,7 +43,7 @@ function retrieve_member_id($cookies) {
 	$pos = strpos($token, $m);
 	//echo 'token:'.$token;
 	//echo 'pos:'.$pos;
-	$member_id = substr($token, $pos+13, 11);
+	$member_id = substr($token, $pos+13, 10);
 	//echo 'id:', $member_id;
 	//return "FUq3ksMk9b";
 	return $member_id;
