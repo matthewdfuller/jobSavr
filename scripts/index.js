@@ -152,7 +152,7 @@ function updateRight(elem) {
     
     document.getElementById('posting_title').innerHTML="<input id=\"editable_post_title\" class=\"editable\" onBlur=\"saveChanges()\" type=\"text\" value=\"" + $(elem).data("job_info").job_title + "\"/>" + " <br/><div id=\"posting_top_company_name\">" + "<input id=\"editable_post_company\"class=\"editable\" onBlur=\"saveChanges()\" type=\"text\" value=\"" + $(elem).data("job_info").company_name + "\"/></div>";
     document.getElementById('posting_url').innerHTML= "<a href=\"" + $(elem).data("job_info").url + "\">" + $(elem).data("job_info").url + "</a>";
-    document.getElementById('posting_description').innerHTML="<input id=\"hidden_id\" type=\"hidden\" value=\"" + $(elem).data("job_id") + "\"/><textarea id=\"editable_description\" class=\"editable_textarea\" onBlur=\"saveChanges()\">" + $(elem).data("job_info").desc + "</textarea>";
+    document.getElementById('posting_description').innerHTML="<input id=\"hidden_id\" type=\"hidden\" value=\"" + $(elem).data("job_info").job_id + "\"/><textarea id=\"editable_description\" class=\"editable_textarea\" onBlur=\"saveChanges()\">" + $(elem).data("job_info").desc + "</textarea>";
     
     getCompanyInfo($(elem).data("job_info").company_name);
     //getConnections(li_company_name);
@@ -169,8 +169,7 @@ function makeEditable() {
 }
 
 function saveChanges() {
-    updateToJSON();
-    //alert('1');
+    updateJob();
 }
 
 //LINKED IN API CALLS
