@@ -44,6 +44,10 @@ function addJob() {
 	$request = Slim::getInstance()->request();
 	$token = $app->getCookie('token');
 	$job = json_decode($request->getBody());
+	if (checkJob($job->url, $token)) {
+		echo '{"error":{"text":"The job already exists."}}';
+		return;
+	}
 	$sql = "INSERT INTO jobs (user_token, url, title, company, description) VALUES (:token, :url, :title, :company, :desc)";
 	try {
 		$db = connect();
@@ -63,13 +67,34 @@ function addJob() {
 }
 
 
+function checkJob($url, $token) {
+        $sql = "SELECT * FROM jobs WHERE url=:url AND user_token=:token";
+        try {
+                $db = connect();
+                $stmt = $db->prepare($sql);
+                $stmt->bindParam("token", $token);
+                $stmt->bindParam("url", $url);
+                $stmt->execute();
+                $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                if (!empty($result)) {
+                        return true;
+                } else {
+                        return false;
+                }
+        } catch(PDOException $e) {
+                echo '{"error":{"text":'. $e->getMessage() .'}}';
+        }
+        return false;
+}
+
+
 function updateJob() {
 	global $app;
 	$request = Slim::getInstance()->request();
 	$token = $app->getCookie('token');
 	$job = json_decode($request->getBody());
 	if (!verify($token, $job->id)) {
-		echo '{"error":{"text": You are not authorized.}}';
+		echo '{"error":{"text": "Job doesn\'t exist or you are not authorized."}}';
 		return;
 	}
 	$sql = "UPDATE jobs SET url=:url, title=:title, company=:company, description=:desc WHERE id=:id AND user_token=:token";
@@ -97,7 +122,7 @@ function deleteJob() {
 	$token = $app->getCookie('token');
 	$job = json_decode($request->getBody());
 	if (!verify($token, $job->id)) {
-		echo '{"error":{"text": You are not authorized.}}';
+		echo '{"error":{"text": "Job doesn\'t exist or you are not authorized."}}';
 		return;
 	}
 	$sql = "DELETE FROM jobs WHERE id=:id AND user_token=:token";
