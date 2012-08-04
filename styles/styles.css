@@ -17,13 +17,28 @@ html, body {
     box-shadow: 0 0 5px 5px #888;
 }
 
+#title_logo {
+    color: white;
+    font-family: "Averia Sans Libre", cursive;
+    font-weight: 700;
+    font-size: 22pt;
+    margin-left: 20px;
+    float: left;
+}
+
+#login_area {
+    float: right;
+    margin-top: 10px;
+    margin-right: 40px;
+}
+
 #left {
     float: left;
     width: 20%;
     margin-left: 10px;
     border: 0px solid red;
     padding: 10px;
-    height: 90%;
+    height: 95%;
 }
 
 #my_jobs_text {
@@ -39,8 +54,8 @@ html, body {
     padding: 4px;
     border: 1px solid #DCDCDC;
     font-family: sans-serif;
-    max-height: 90%;
-    height: 90%;
+    max-height: 93%;
+    height: 93%;
     overflow-x: hidden;
     overflow-y: auto;
 }
@@ -78,8 +93,8 @@ html, body {
 }
 
 #posting {
-    width: 90%;
-    height: 90%;
+    width: 93%;
+    height: 93%;
     margin-top: 79px;
     margin-left: auto;
     margin-right: auto;
