@@ -1,0 +1,111 @@
+html, body {
+    margin: 0px;
+    padding: 0px;
+    background: url('../images/right_bg.png');
+    background-repeat: repeat;
+    height: 100%;
+}
+
+#topbar {
+    border-bottom: 1px solid black;
+    background-color: #303030;
+    background-image: url('../images/bg.png');
+    background-repeat: repeat;
+    height: 40px;
+    -moz-box-shadow: 0 0 5px 5px #888;
+    -webkit-box-shadow: 0 0 5px 5px#888;
+    box-shadow: 0 0 5px 5px #888;
+}
+
+#left {
+    float: left;
+    width: 20%;
+    margin-left: 10px;
+    border: 0px solid red;
+    padding: 10px;
+    height: 90%;
+}
+
+#my_jobs_text {
+    font-family: 'Ruda', sans-serif;
+    font-size: 40pt;
+    color: #4A4B4C;
+    font-weight: 800;
+}
+
+#left_inner {
+    background-color: #EDEDED;
+    border-radius: 3px;
+    padding: 4px;
+    border: 1px solid #DCDCDC;
+    font-family: sans-serif;
+    max-height: 90%;
+    height: 90%;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.left_listing {
+    border: 1px solid #EDEDED;
+    padding: 7px;
+    margin-bottom: 2px;
+    border-radius: 3px;
+}
+
+.left_listing:hover {
+    background-color: white;
+    border: 1px solid #E0E0E0;
+    cursor: pointer;
+}
+
+.listing_title {
+    font-size: 14pt;
+    font-weight: 700;
+    color: #888;
+}
+
+.listing_company {
+    font-size: 10pt;
+    font-weight: 300;
+    color: #999;
+}
+
+#right {
+    background-repeat: repeat;
+    width: 78%;
+    height: 90%;
+    float: right;
+}
+
+#posting {
+    width: 90%;
+    height: 90%;
+    margin-top: 79px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#posting_top {
+
+    background-color: #EDEDED;
+    height: 50px;
+    border-bottom: 1px solid #DCDCDC;
+}
+
+#posting_content {
+    background-color: white;
+    border-radius: 3px;
+    height: 100%;
+    border: 1px solid #DCDCDC;
+}
+
+#none_selected {
+    width: 70%;
+    margin-left: auto;
+    margin-right: auto;
+    font-family: 'Ruda', sans-serif;
+    font-weight: 200;
+    color: #B9B9B9;
+    text-align: center;
+    margin-top: 100px;
+}
