@@ -77,12 +77,12 @@ function updateJob() {
             if (handleError(data)) return;
         },
         error: function(jqXHR, textStatus, errorThrown){
-		alert('update job error: ' + textStatus);
+		//alert('update job error: ' + textStatus);
         }
     });
+    
+    getJobs();
 }
-
-
 
 function deleteJob() {
     $.ajax({
@@ -110,7 +110,7 @@ function deleteJob() {
 
 
 function getJobs() {
-    $("#left_inner").html("");
+    //$("#left_inner").html("");
     $.ajax({
 	    type: 'GET',
         dataType: 'json',
