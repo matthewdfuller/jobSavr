@@ -142,11 +142,13 @@ var founded_year = "";
 var company_description = "";
 var company_url = "";
 var li_company_name = "";
+var element_pass;
 
 function updateRight(elem) {
     document.getElementById('none_selected').style.display="none";
     document.getElementById('posting_under').style.display="block";
     document.getElementById('job_top_headline').style.display="block";
+    element_pass = elem;
     $(elem).toggleClass('left_listing_clicked');
     $(currently_highlighted).toggleClass('left_listing_clicked');
     currently_highlighted = elem;
@@ -159,12 +161,16 @@ function updateRight(elem) {
     //getConnections(li_company_name);
 }
 
+<<<<<<< HEAD
 //MakeEditable makes textboxes editable
 var editing = false;
 function makeEditable() {
     editing = true;
 }
 
+=======
+//MakeEditable makes textboxes editable save to db
+>>>>>>> js updates
 function saveChanges() {
     updateJob();
     
@@ -211,6 +217,24 @@ function getConnections(company_name_in) {
         $.each(value.people.values, function(index, person) {
                 //alert(person.firstName);
                 document.getElementById('you_know').innerHTML+=person.firstName + " " + person.lastName + " - <a href=\"" + person.publicProfileUrl + "\">ask for a recommendation?</a><br/>";
+            })
+
+        //document.getElementById('you_know').innerHTML=value.people.values[0].firstName + " " + value.people.values[0].lastName + " - <a href=\"" + value.people.values[0].publicProfileUrl + "\">ask for a recommendation?</a>";
+        //alert(value.companies.values[0]["id"]);
+        getSimilarJobs();
+    })
+}
+
+function getSimilarJobs() {
+    var in_job_title = $(element_pass).data("job_info").job_title;
+    IN.API.Raw('/job-search?job-title=' + encodeURIComponent(in_job_title))
+    .result(function(value) {
+        //alert(JSON.stringify(value));
+        document.getElementById('similar_jobs').innerHTML="";
+        
+        $.each(value.jobs.values, function(index, job) {
+                alert(job.company["name"] + job.locationDescription);
+                //document.getElementById('you_know').innerHTML+=person.firstName + " " + person.lastName + " - <a href=\"" + person.publicProfileUrl + "\">ask for a recommendation?</a><br/>";
             })
 
         //document.getElementById('you_know').innerHTML=value.people.values[0].firstName + " " + value.people.values[0].lastName + " - <a href=\"" + value.people.values[0].publicProfileUrl + "\">ask for a recommendation?</a>";
