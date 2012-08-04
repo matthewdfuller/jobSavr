@@ -20,6 +20,16 @@ function displayProfiles(profiles) {
         "Welcome, " +  member.firstName + " " + member.lastName;
 }
 
+
+function formToJSON() {
+    return JSON.stringify({
+	"url": $('#add_form_url').val(),
+	"title": $('#add_form_title').val(),
+	"company_name": $('#add_form_company_name').val(),
+	"description": $('#add_form_description').val()
+    });
+}
+
 function addJob() {
     $.ajax({
 	type: 'POST',
