@@ -98,10 +98,10 @@
                             Company Profile
                         </div>
                         <div class="posting_section">
-                            Number of Employees: <span id="num_employees">200-400</span><br/>
-                            Company Website: <span id="company_website">http://mozilla.com</span><br/>
-                            Year Founded: <span id="year_founded">2003</span><br/>
-                            Average Salary: $89,500<br/>
+                            Number of Employees: <span id="num_employees"></span><br/>
+                            Company Website: <span id="company_website"></span><br/>
+                            Year Founded: <span id="year_founded"></span><br/>
+                            Company Description: <span id="company_description"></span>
                         </div>
                         <div class="spacer"></div>
                         <div class="posting_header">
@@ -125,12 +125,14 @@
                             Location
                         </div>
                         <div class="posting_section">
-                            <img src="images/map.png"/><br/>
-                            Moutain View, CA
+                            <div id="company_map">
+                                <img src="http://maps.googleapis.com/maps/api/staticmap?center=94043,CA&zoom=10&size=350x300&maptype=roadmap&markers=color:red%7Ccolor:red%7Clabel:A%7C94043&sensor=false"/>
+                            </div>
+                            <span id="company_location"> </span>
                         </div>
                         <div class="spacer"></div>
                         <div class="posting_header">
-                            Twitter Feed
+                            Twitter Feed <span id="company_twitter"></span>
                         </div>
                         <div class="posting_section">
                             #Mozilla is an awesome company to work for! Love coming to work each day :)

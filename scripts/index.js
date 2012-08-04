@@ -121,6 +121,11 @@ function getJobs() {
 //Call onClick when job on left is clicked
 
 var currently_highlighted = "";
+var num_employees = "";
+var company_id = "";
+var founded_year = "";
+var company_description = "";
+var company_url = "";
 
 function updateRight(elem) {
     console.log($(elem));
@@ -144,37 +149,33 @@ function updateDescription(desc) {
     document.getElementById('posting_description').innerHTML=desc;
 }
 
-function updateProfile(company_name) {
-    document.getElementById('num_employees').innerHTML=getNumEmployees(company_name);
-    document.getElementById('company_website').innerHTML=getCompanyWebsite(company_name);
-}
-
-
 
 //LINKED IN API CALLS
-
-var num_employees = "";
-var company_website = "";
-var company_id = "";
-
 
 function getCompanyInfo(company_name) {
     IN.API.Raw('/company-search?keywords=' + encodeURIComponent(company_name))
     .result(function(value) {
         //alert(JSON.stringify(value));
-        alert(value.companies.values[0]["id"]);
+        //alert(value.companies.values[0]["id"]);
         company_id = value.companies.values[0]["id"];
     })
     .error(function(error) {
         //alert(JSON.stringify(error));
     });
     
-    
-/*
-    var url = "/companies?id=13948";
+    var url = "/companies/" + company_id + ":(name,description,website-url,twitter-id,employee-count-range,founded-year,locations:(address:(city,state,postal-code)))";
     IN.API.Raw(url)
     .result(function(response) {
-        alert(response);
+        alert(JSON.stringify(response));
+        company_description = response.description;
+        
+        document.getElementById('num_employees').innerHTML= response.employeeCountRange["name"];
+        document.getElementById('company_website').innerHTML=response.websiteUrl;
+        document.getElementById('year_founded').innerHTML=response.foundedYear;
+        document.getElementById('company_description').innerHTML=response.description;
+        document.getElementById('company_location').innerHTML=response.locations.values[0]["address"]["city"] + ", " + response.locations.values[0]["address"]["state"] + " " + response.locations.values[0]["address"]["postalCode"];
+        document.getElementById('company_twitter').innerHTML="@" + response.twitterId;
+        document.getElementById('company_map').innerHTML="<img src=\"http://maps.googleapis.com/maps/api/staticmap?center=" + response.locations.values[0]["address"]["postalCode"] + "&zoom=13&size=350x300&maptype=roadmap&markers=color:red%7Ccolor:red%7Clabel:A%7C" + response.locations.values[0]["address"]["postalCode"] + "&sensor=false\"/>";
+        //alert(num_employees);
     });
-*/
 }
