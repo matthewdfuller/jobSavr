@@ -69,12 +69,30 @@ function handleError(data) {
     </script>
     <form name="add_job" id="jobsavr_add_job" action="" method="post">
 	  Company Name: <input type="text" id="add_form_company_name" name="com_name" /><br/>
-	  <input type="hidden" id="add_form_url" name="com_url" />
-	  Job title: <input type="text" id="add_form_title" name="job_title" /><br/>
-	  Location: <input type="text" id="add_form_location" name="location" /><br/>
-      Description: <textarea id="add_form_description" name="description"></textarea><br/>
-	  <input type="submit" value="Add A New Job" />
-    </form>
-  </body>
-</html>
 
+	  <input type="hidden" id="add_form_url" name="com_url" />
+	  Job title: <input class="textboxer" type="text" id="add_form_title" name="job_title" /><br/>
+	  Location: <input class="textboxer" type="text" id="add_form_location" name="location" /><br/>
+      Description: <textarea class="textarear" id="add_form_description" name="description"></textarea><br/>
+	  <input type="submit" value="Add A New Job" />
+
+  </form>
+
+  <style type="text/css">
+	body {
+		overflow: hidden;
+	}
+	
+	#holder {
+		background-color: #EBEBEB;
+	}
+	.textboxer {
+	    border: 1px solid #C1C1C1;
+	   font-size: 14pt;
+	}
+	.textarear {
+	   width: 80%;
+	    height: 50px;
+	}
+	
+  </style>
