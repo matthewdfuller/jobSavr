@@ -148,7 +148,7 @@ function checkJob($url, $token) {
 function updateJob() {
 	global $app;
 	$request = Slim::getInstance()->request();
-	$token = retrieve_member_id($app->request()->cookies());
+	$token = retrieve_member_id($app->getCookie('linkedin_oauth_l3bpklmxvfcp'));
 
 	$job = json_decode($request->getBody());
 	if (!verify($token, $job->id)) {
@@ -177,7 +177,7 @@ function updateJob() {
 function deleteJob() {
 	global $app;
 	$request = Slim::getInstance()->request();
-	$token = retrieve_member_id($app->request()->cookies());
+	$token = retrieve_member_id($app->getCookie('linkedin_oauth_l3bpklmxvfcp'));
 	$job = json_decode($request->getBody());
 	if (!verify($token, $job->id)) {
 		echo '{"error":"Job doesn\'t exist or you are not authorized."}';
@@ -219,12 +219,13 @@ function verify($token, $id) {
 
 function connect() {
 	$dbhost="localhost";
-	/* $dbuser="root"; */
-	/* $dbpass="mozilla_oakwood"; */
-	/* $dbname="jobsavr"; */
+	$dbuser="jobsavr";
+	$dbpass="mozilla_oakwood";
+	$dbname="jobsavr";
+	/*
 	$dbuser="cranecon_jobsavr";
 	$dbname="cranecon_jobsavr";
-	$dbpass="cee-j6AH3quu";
+	$dbpass="cee-j6AH3quu";*/
 	$dbh = new PDO("mysql:host=$dbhost;dbname=$dbname", $dbuser, $dbpass);	
 	$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	return $dbh;
