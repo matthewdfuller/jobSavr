@@ -1,12 +1,17 @@
-function getUsersJobs() {
+var rootURL = "https://secure.bluehost.com/~cranecon/jobsavr/index.php/index";
+
+
+function getJobs() {
     $.ajax({
-        url: "",
+	type: 'GET',
+        url: rootURL,
         dataType: 'json',
-        data: data,
-        success: function(json_data){
-            var job_title = json_data.item[0].job_title;
-        }
-    });
+        success: function(data){
+            var list = data == null ? [] : (json.data.jobs instanceof Array ? data.jobs : [data.jobs]);
+	    $.each(list, function(index, job) {
+		
+            }); 
+        });
 }
 
 //Call onClick when job on left is clicked
@@ -45,3 +50,6 @@ function getNumEmployees(company_name) {
     var num_employees = "200-500";
     return num_employees;
 }
+
+
+
