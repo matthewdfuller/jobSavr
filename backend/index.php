@@ -1,91 +1,147 @@
 <?php
-/**
- * Step 1: Require the Slim PHP 5 Framework
- *
- * If using the default file layout, the `Slim/` directory
- * will already be on your include path. If you move the `Slim/`
- * directory elsewhere, ensure that it is added to your include path
- * or update this file path as needed.
- */
 require 'Slim/Slim.php';
 
-/**
- * Step 2: Instantiate the Slim application
- *
- * Here we instantiate the Slim application with its default settings.
- * However, we could also pass a key-value array of settings.
- * Refer to the online documentation for available settings.
- */
 $app = new Slim();
 
-/**
- * Step 3: Define the Slim application routes
- *
- * Here we define several Slim application routes that respond
- * to appropriate HTTP request methods. In this example, the second
- * argument for `Slim::get`, `Slim::post`, `Slim::put`, and `Slim::delete`
- * is an anonymous function. If you are using PHP < 5.3, the
- * second argument should be any variable that returns `true` for
- * `is_callable()`. An example GET route for PHP < 5.3 is:
- *
- * $app = new Slim();
- * $app->get('/hello/:name', 'myFunction');
- * function myFunction($name) { echo "Hello, $name"; }
- *
- * The routes below work with PHP >= 5.3.
- */
+#$app->get('/index', 'test');
+$app->get('/index', 'getJobs');
+$app->post('/index', 'addJob');
+$app->put('/index', 'updateJob');
+$app->delete('/index','deleteJob');
 
-//GET route
-$app->get('/', function () {
-    $template = <<<EOT
-<!DOCTYPE html>
-    <html>
-        <body>
-                Hello, World!
-        </body>
-    </html>
-EOT;
-    echo $template;
-});
-
-//POST route
-/* $app->post('/post', function () { */
-/*     echo 'This is a POST route'; */
-/* }); */
-
-//PUT route
-$app->put('/job', 'addJob');
-
-//DELETE route
-/* $app->delete('/delete', function () { */
-/*     echo 'This is a DELETE route'; */
-/* }); */
-
-/**
- * Step 4: Run the Slim application
- *
- * This method should be called last. This is responsible for executing
- * the Slim application using the settings and routes defined above.
- */
 $app->run();
 
+function test() {
+	try { 
+		$db = connect();
+	}
+	catch (PDOException $e){
+		echo $e->getMessage();
+	}
+	echo 'hello world';
+}
+
+function getJobs() {
+	global $app;
+	$request = Slim::getInstance()->request();
+	$token = $app->getCookie('token');
+	$sql = "SELECT * FROM jobs WHERE user_token=:token";
+	try {
+		$db = connect();
+		$stmt = $db->prepare($sql);
+		$stmt->bindParam("token", $token);
+		$stmt->execute();
+		$jobs = $stmt->fetchAll(PDO::FETCH_OBJ);
+		$db = null;
+		echo '{"jobs":' . json_encode($jobs) . '}';
+	}catch(PDOException $e) {
+		echo '{"error":{"text":'. $e->getMessage() .'}}';
+	}
+}
 
 function addJob() {
-  $request = Slim::getInstance()->request();
-  $job = json_decode($request->getBody());
-  echo $job;
+	global $app;
+	$request = Slim::getInstance()->request();
+	$token = $app->getCookie('token');
+	$job = json_decode($request->getBody());
+	$sql = "INSERT INTO jobs (user_token, url, title, company, description) VALUES (:token, :url, :title, :company, :desc)";
+	try {
+		$db = connect();
+		$stmt = $db->prepare($sql);
+		$stmt->bindParam("token", $token);
+		$stmt->bindParam("url", $job->url);
+		$stmt->bindParam("title", $job->title);
+		$stmt->bindParam("company", $job->company);
+		$stmt->bindParam("desc", $job->description);
+		$stmt->execute();
+		$job->id = $db->lastInsertId();
+		$db = null;
+		echo json_encode($job);
+	} catch(PDOException $e) {
+		echo '{"error":{"text":'. $e->getMessage() .'}}';
+	}
 }
 
-function connectDB() {
-  $services_json = json_decode(getenv("VCAP_SERVICES"),true);
-  $mysql_config = $services_json["mysql-5.1"][0]["credentials"];
 
-  $username = $mysql_config["username"];
-  $password = $mysql_config["password"];
-  $hostname = $mysql_config["hostname"];
-  $port = $mysql_config["port"];
-  $db = $mysql_config["name"];
-
-  $link = mysql_connect("$hostname:$port", $username, $password);
-  $db_selected = mysql_select_db($db, $link);
+function updateJob() {
+	global $app;
+	$request = Slim::getInstance()->request();
+	$token = $app->getCookie('token');
+	$job = json_decode($request->getBody());
+	if (!verify($token, $job->id)) {
+		echo '{"error":{"text": You are not authorized.}}';
+		return;
+	}
+	$sql = "UPDATE jobs SET url=:url, title=:title, company=:company, description=:desc WHERE id=:id AND user_token=:token";
+	try {
+		$db = connect();
+		$stmt = $db->prepare($sql);
+		$stmt->bindParam("id", $job->id);
+		$stmt->bindParam("token", $token);
+		$stmt->bindParam("url", $job->url);
+		$stmt->bindParam("title", $job->title);
+		$stmt->bindParam("company", $job->company);
+		$stmt->bindParam("desc", $job->description);
+		$stmt->execute();
+		$db = null;
+		echo json_encode($job);
+	}catch(PDOException $e) {
+		echo '{"error":{"text":'. $e->getMessage() .'}}';
+	}
 }
+
+
+function deleteJob() {
+	global $app;
+	$request = Slim::getInstance()->request();
+	$token = $app->getCookie('token');
+	$job = json_decode($request->getBody());
+	if (!verify($token, $job->id)) {
+		echo '{"error":{"text": You are not authorized.}}';
+		return;
+	}
+	$sql = "DELETE FROM jobs WHERE id=:id AND user_token=:token";
+	try {
+		$db = connect();
+		$stmt = $db->prepare($sql);
+		$stmt->bindParam("id", $job->id);
+		$stmt->bindParam("token", $token);
+		$stmt->execute();
+		$db = null;
+	} catch(PDOException $e) {
+		echo '{"error":{"text":'. $e->getMessage() .'}}';
+	}
+}
+
+function verify($token, $id) {
+        $sql = "SELECT * FROM jobs WHERE id=:id AND user_token=:token";
+        try {
+                $db = connect();
+                $stmt = $db->prepare($sql);
+                $stmt->bindParam("token", $token);
+                $stmt->bindParam("id", $id);
+                $stmt->execute();
+                $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+		if (!empty($result)) {
+			return true;
+		} else {
+			return false;
+		}
+        } catch(PDOException $e) {
+		echo '{"error":{"text":'. $e->getMessage() .'}}';
+        }
+	return false;
+}
+
+
+function connect() {
+	$dbhost="localhost";
+	$dbuser="root";
+	$dbpass="mozilla_oakwood";
+	$dbname="jobsavr";
+	$dbh = new PDO("mysql:host=$dbhost;dbname=$dbname", $dbuser, $dbpass);	
+	$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+	return $dbh;
+}
+
+?>

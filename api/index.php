@@ -3,8 +3,8 @@ require 'Slim/Slim.php';
 
 $app = new Slim();
 
-#$app->get('/index', 'getJobs');
-$app->get('/index', 'test');
+#$app->get('/index', 'test');
+$app->get('/index', 'getJobs');
 $app->post('/index', 'addJob');
 $app->put('/index', 'updateJob');
 $app->delete('/index','deleteJob');
@@ -12,12 +12,19 @@ $app->delete('/index','deleteJob');
 $app->run();
 
 function test() {
+	try { 
+		$db = connect();
+	}
+	catch (PDOException $e){
+		echo $e->getMessage();
+	}
 	echo 'hello world';
 }
 
 function getJobs() {
+	global $app;
 	$request = Slim::getInstance()->request();
-	$token = $request->getCookie('token');
+	$token = $app->getCookie('token');
 	$sql = "SELECT * FROM jobs WHERE user_token=:token";
 	try {
 		$db = connect();
@@ -33,13 +40,11 @@ function getJobs() {
 }
 
 function addJob() {
-	echo 'hello';
+	global $app;
 	$request = Slim::getInstance()->request();
-	$token = $request->getCookie('token');
+	$token = $app->getCookie('token');
 	$job = json_decode($request->getBody());
-	print 'hello';
-	$sql = "INSERT INTO jobs (user_token, url, title, company) VALUES (:token, :url, :title, :company)";
-	print $sql;
+	$sql = "INSERT INTO jobs (user_token, url, title, company, description) VALUES (:token, :url, :title, :company, :desc)";
 	try {
 		$db = connect();
 		$stmt = $db->prepare($sql);
@@ -47,26 +52,27 @@ function addJob() {
 		$stmt->bindParam("url", $job->url);
 		$stmt->bindParam("title", $job->title);
 		$stmt->bindParam("company", $job->company);
+		$stmt->bindParam("desc", $job->description);
 		$stmt->execute();
-		$db = null;
 		$job->id = $db->lastInsertId();
+		$db = null;
 		echo json_encode($job);
 	} catch(PDOException $e) {
 		echo '{"error":{"text":'. $e->getMessage() .'}}';
 	}
-	echo 'finish\n';
 }
 
 
 function updateJob() {
+	global $app;
 	$request = Slim::getInstance()->request();
-	$token = $request->getCookie('token');
+	$token = $app->getCookie('token');
 	$job = json_decode($request->getBody());
 	if (!verify($token, $job->id)) {
 		echo '{"error":{"text": You are not authorized.}}';
 		return;
 	}
-	$sql = "UPDATE jobs SET url=:url, title=:title, company=:company WHERE id=:id AND user_token=:token";
+	$sql = "UPDATE jobs SET url=:url, title=:title, company=:company, description=:desc WHERE id=:id AND user_token=:token";
 	try {
 		$db = connect();
 		$stmt = $db->prepare($sql);
@@ -75,6 +81,7 @@ function updateJob() {
 		$stmt->bindParam("url", $job->url);
 		$stmt->bindParam("title", $job->title);
 		$stmt->bindParam("company", $job->company);
+		$stmt->bindParam("desc", $job->description);
 		$stmt->execute();
 		$db = null;
 		echo json_encode($job);
@@ -85,8 +92,9 @@ function updateJob() {
 
 
 function deleteJob() {
+	global $app;
 	$request = Slim::getInstance()->request();
-	$token = $request->getCookie('token');
+	$token = $app->getCookie('token');
 	$job = json_decode($request->getBody());
 	if (!verify($token, $job->id)) {
 		echo '{"error":{"text": You are not authorized.}}';
@@ -105,7 +113,7 @@ function deleteJob() {
 	}
 }
 
-function verify($id, $token) {
+function verify($token, $id) {
         $sql = "SELECT * FROM jobs WHERE id=:id AND user_token=:token";
         try {
                 $db = connect();
@@ -113,7 +121,7 @@ function verify($id, $token) {
                 $stmt->bindParam("token", $token);
                 $stmt->bindParam("id", $id);
                 $stmt->execute();
-                $result = $stmt->fetch(PDO::FETCH_ASSOC);
+                $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 		if (!empty($result)) {
 			return true;
 		} else {
