@@ -11,10 +11,16 @@
 
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
     <script type="text/javascript" src="scripts/addjob.js"></script>
+
     <script type="text/javascript" src="scripts/shadowbox/shadowbox.js"></script>
     <script type="text/javascript">
       Shadowbox.init({skipSetup: true});
     </script>
+
+    
+    <script charset="utf-8" src="http://widgets.twimg.com/j/2/widget.js"></script>
+        
+
     <!--LINKED IN JS -->
     <script type="text/javascript" src="https://platform.linkedin.com/in.js">
         api_key: l3bpklmxvfcp
@@ -49,7 +55,7 @@
 		</div>
 	    </div>
             <script type="text/javascript">
-                $('#job_10').data("job_info", { job_title:"Security Engineer", company_name:"Yelp", url:"http://mozilla.com/jobs/posting/203032dddddd22d22d3dd9x9",desc:"Sample description"});
+                $('#job_10').data("job_info", { job_title:"Security Engineer", company_name:"Mozilla", url:"http://mozilla.com/jobs/posting/203032dddddd22d22d3dd9x9",desc:"Sample description"});
             </script>
             
             <div id="job_11" class="left_listing" onclick="updateRight(this)">
@@ -146,10 +152,36 @@
                             Twitter Feed <span id="company_twitter"></span>
                         </div>
                         <div class="posting_section">
-                            #Mozilla is an awesome company to work for! Love coming to work each day :)
-                            <br/>
-                            <br/>
-                            #Mozilla is an awesome company to work for! Love coming to work each day!
+                            
+                                <script>
+                                new TWTR.Widget({
+                                  version: 2,
+                                  type: 'search',
+                                  search: 'rainbow',
+                                  interval: 30000,
+                                  title: '',
+                                  subject: '',
+                                  width: 350,
+                                  height: 300,
+                                  theme: {
+                                    shell: {
+                                      background: '#8ec1da',
+                                      color: '#ffffff'
+                                    },
+                                    tweets: {
+                                      background: '#ffffff',
+                                      color: '#444444',
+                                      links: '#1985b5'
+                                    }
+                                  },
+                                  features: {
+                                    scrollbar: true,
+                                    loop: true,
+                                    live: true,
+                                    behavior: 'default'
+                                  }
+                                }).render().start();
+                                </script>
                         </div>
                         
                     </div>
