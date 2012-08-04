@@ -16,6 +16,11 @@ a:hover {text-decoration: underline; color: #0195C2;}
     font-size: 14pt;
 }
 
+.textarear {
+    width: 80%;
+    height: 50px;
+}
+
 #topbar {
     border-bottom: 1px solid black;
     background-color: #303030;
@@ -132,7 +137,7 @@ a:hover {text-decoration: underline; color: #0195C2;}
 
 #add_job_inner_box {
     width: 500px;
-    height: 280px;
+    height: 400px;
     margin-left: auto;
     margin-right: auto;
     background: url('../images/right_bg.png');
