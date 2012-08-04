@@ -149,18 +149,19 @@ function updateJob() {
 	global $app;
 	$request = Slim::getInstance()->request();
 	$token = retrieve_member_id($app->getCookie('linkedin_oauth_l3bpklmxvfcp'));
+
 	$job = json_decode($request->getBody());
 	if (!verify($token, $job->id)) {
 		echo '{"error":"Job doesn\'t exist or you are not authorized."}';
 		return;
 	}
-	$sql = "UPDATE jobs SET url=:url, title=:title, company=:company, description=:desc, company_id=:company_id WHERE id=:id AND user_token=:token";
+	$sql = "UPDATE jobs SET title=:title, company=:company, description=:desc, company_id=:company_id WHERE id=:id AND user_token=:token";
 	try {
 		$db = connect();
 		$stmt = $db->prepare($sql);
 		$stmt->bindParam("id", $job->id);
 		$stmt->bindParam("token", $token);
-		$stmt->bindParam("url", $job->url);
+		//$stmt->bindParam("url", $job->url);
 		$stmt->bindParam("title", $job->title);
 		$stmt->bindParam("company", $job->company);
 		$stmt->bindParam("company_id", $job->company_id);

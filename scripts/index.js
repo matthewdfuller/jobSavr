@@ -69,7 +69,7 @@ function addJob() {
 function updateJob() {
     $.ajax({
         type: 'PUT',
-	    contentType: 'application/json',
+	contentType: 'application/json',
         url: backendURL,
         dataType: 'json',
         data: JSON.stringify(cur_job),
@@ -80,25 +80,32 @@ function updateJob() {
 		    alert('update job error: ' + textStatus);
         }
     });
+    
+    getJobs();
 }
 
-
-function deleteJob(id) {
-    console.log(id);
-    return;
+function deleteJob() {
     $.ajax({
         type: 'DELETE',
 	    contentType: 'application/json',
         url: backendURL,
         dataType: 'json',
-        data: id,  // put job id here. 
+        data: JSON.stringify({
+            "id": $('#hidden_id').val()}),  // put job id here.
         success: function(data, textStatus, jqXHR){
             if (handleError(data)) return;
         },
         error: function(jqXHR, textStatus, errorThrown){
-		    alert('delete job error: ' + textStatus);
+		    //alert('delete job error: ' + textStatus);
         }
     });
+    
+    document.getElementById('posting_under').style.display="none";
+    document.getElementById('job_top_headline').style.display="none";
+    document.getElementById('posting_top_right').style.display="none";
+    document.getElementById('none_selected').style.display="block";
+    
+    getJobs();
 }
 
 
@@ -137,11 +144,14 @@ var founded_year = "";
 var company_description = "";
 var company_url = "";
 var li_company_name = "";
+var element_pass;
 
 function updateRight(elem) {
     document.getElementById('none_selected').style.display="none";
     document.getElementById('posting_under').style.display="block";
     document.getElementById('job_top_headline').style.display="block";
+    document.getElementById('posting_top_right').style.display="block";
+    element_pass = elem;
     $(elem).toggleClass('left_listing_clicked');
     $(currently_highlighted).toggleClass('left_listing_clicked');
     currently_highlighted = elem;
@@ -161,11 +171,6 @@ function updateRight(elem) {
 }
 
 //MakeEditable makes textboxes editable
-var editing = false;
-function makeEditable() {
-    editing = true;
-}
-
 function saveChanges() {
     cur_job = {
         "id": cur_job.id,
@@ -178,6 +183,7 @@ function saveChanges() {
 }
 
 //LINKED IN API CALLS
+var zippy_code;
 
 function getCompanyInfo(company_name) {
     IN.API.Raw('/company-search?keywords=' + encodeURIComponent(company_name))
@@ -235,6 +241,7 @@ function getCompanyProfile(c_id) {
             document.getElementById('company_map').innerHTML="<img src=\"http://maps.googleapis.com/maps/api/staticmap?center=" + response.locations.values[0]["address"]["postalCode"] + "&zoom=13&size=350x300&maptype=roadmap&markers=color:red%7Ccolor:red%7Clabel:A%7C" + response.locations.values[0]["address"]["postalCode"] + "&sensor=false\"/>";
         }
         document.getElementById('company_twitter').innerHTML="@" + response.twitterId;
+        zippy_code = response.locations.values[0]["address"]["postalCode"];
         //alert(num_employees);
         getConnections(response.name);
     })
@@ -258,6 +265,27 @@ function getConnections(company_name_in) {
 
         //document.getElementById('you_know').innerHTML=value.people.values[0].firstName + " " + value.people.values[0].lastName + " - <a href=\"" + value.people.values[0].publicProfileUrl + "\">ask for a recommendation?</a>";
         //alert(value.companies.values[0]["id"]);
+        getSimilarJobs();
+    });
+}
+
+function getSimilarJobs() {
+    var in_job_title = cur_job.title;
+    //IN.API.Raw('/job-search?job-title=' + encodeURIComponent(in_job_title))
+    IN.API.Raw('/job-search?keywords=' + encodeURIComponent(in_job_title))
+    .result(function(value) {
+        //alert(JSON.stringify(value));
+        document.getElementById('similar_jobs').innerHTML="";
+        
+        $(value.jobs.values).slice(0,3);
+        $.each(value.jobs.values, function(index, job) {
+                //alert(job.company["name"] + job.locationDescription);
+                document.getElementById('similar_jobs').innerHTML+=job.company["name"] + " - " + job.locationDescription + "<br/>";
+            });
+
+        //document.getElementById('you_know').innerHTML=value.people.values[0].firstName + " " + value.people.values[0].lastName + " - <a href=\"" + value.people.values[0].publicProfileUrl + "\">ask for a recommendation?</a>";
+        //alert(value.companies.values[0]["id"]);
         
     });
 }
+
