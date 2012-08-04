@@ -117,7 +117,11 @@ function deleteJob() {
 
 function getJobs() {
     //$("#left_inner").html("");
-    //document.getElementById('left_inner').innerHTML="";
+    document.getElementById('left_inner').innerHTML="";
+    refreshJobs();
+}
+
+function refreshJobs() {
     $.ajax({
 	    type: 'GET',
         dataType: 'json',
