@@ -129,6 +129,7 @@ function updateRight(elem) {
     currently_highlighted = elem;
     updateJobTitle($(elem).data("job_info").job_title, $(elem).data("job_info").company_name);
     updateURL($(elem).data("job_info").url);
+    getCompanyInfo($(elem).data("job_info").company_name);
 }
 
 function updateJobTitle(job_title, company_name) {
@@ -151,15 +152,29 @@ function updateProfile(company_name) {
 
 
 //LINKED IN API CALLS
+
+var num_employees = "";
+var company_website = "";
+var company_id = "";
+
+
 function getCompanyInfo(company_name) {
+    IN.API.Raw('/company-search?keywords=' + encodeURIComponent(company_name))
+    .result(function(value) {
+        //alert(JSON.stringify(value));
+        alert(value.companies.values[0]["id"]);
+        company_id = value.companies.values[0]["id"];
+    })
+    .error(function(error) {
+        //alert(JSON.stringify(error));
+    });
     
+    
+/*
+    var url = "/companies?id=13948";
+    IN.API.Raw(url)
+    .result(function(response) {
+        alert(response);
+    });
+*/
 }
-
-function getNumEmployees(company_name) {
-    //MAKE API CALL AND RETURN NUM_EMPLOYEES
-    var num_employees = "200-500";
-    return num_employees;
-}
-
-
-
