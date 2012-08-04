@@ -161,7 +161,7 @@ function updateRight(elem) {
     console.log(cur_job);
     document.getElementById('posting_title').innerHTML="<input id=\"editable_post_title\" class=\"editable\" onBlur=\"saveChanges()\" type=\"text\" value=\"" + cur_job.title + "\"/>" + " <br/><div id=\"posting_top_company_name\">" + "<input id=\"editable_post_company\"class=\"editable\" onBlur=\"saveChanges()\" type=\"text\" value=\"" + cur_job.company + "\"/></div>";
     document.getElementById('posting_url').innerHTML= "<a href=\"" + cur_job.url + "\">" + cur_job.url + "</a>";
-    document.getElementById('posting_description').innerHTML="<input id=\"hidden_id\" type=\"hidden\" value=\"" + cur_job.job_id + "\"/><input id=\"company_id\" type=\"hidden\" value=\"" + cur_job.company_id + "\"/><textarea id=\"editable_description\" class=\"editable_textarea\" onBlur=\"saveChanges()\">" + cur_job.desc + "</textarea>";
+    document.getElementById('posting_description').innerHTML="<input id=\"hidden_id\" type=\"hidden\" value=\"" + cur_job.job_id + "\"/><input id=\"company_id\" type=\"hidden\" value=\"" + cur_job.company_id + "\"/><textarea id=\"editable_description\" class=\"editable_textarea\" onBlur=\"saveChanges()\">" + cur_job.description + "</textarea>";
 
     if (!cur_job.company_id) {
         getCompanyInfo(cur_job.company);
