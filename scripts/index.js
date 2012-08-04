@@ -2,7 +2,7 @@ var prod = false;
 
 var backendURL;
 if (prod)
-    backendURL = 'https://rinon.info/backend';
+    backendURL = 'https://rinon.info/backend/index.php';
 else
     backendURL = 'https://localhost/backend/index.php';
 
