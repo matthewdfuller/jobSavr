@@ -123,30 +123,22 @@ var company_id = "";
 var founded_year = "";
 var company_description = "";
 var company_url = "";
+var li_company_name = "";
 
 function updateRight(elem) {
     document.getElementById('none_selected').style.display="none";
     document.getElementById('posting_under').style.display="block";
     document.getElementById('job_top_headline').style.display="block";
-    console.log($(elem));
     $(elem).toggleClass('left_listing_clicked');
     $(currently_highlighted).toggleClass('left_listing_clicked');
     currently_highlighted = elem;
-    updateJobTitle($(elem).data("job_info").job_title, $(elem).data("job_info").company_name);
-    updateURL($(elem).data("job_info").url);
+    
+    document.getElementById('posting_title').innerHTML=$(elem).data("job_info").job_title + " // " + $(elem).data("job_info").company_name;
+    document.getElementById('posting_url').innerHTML= "<a href=\"" + $(elem).data("job_info").url + "\">" + $(elem).data("job_info").url + "</a>";
+    document.getElementById('posting_description').innerHTML= $(elem).data("job_info").desc;
+    
     getCompanyInfo($(elem).data("job_info").company_name);
-}
-
-function updateJobTitle(job_title, company_name) {
-    document.getElementById('posting_title').innerHTML=job_title + " // " + company_name;
-}
-
-function updateURL(url) {
-    document.getElementById('posting_url').innerHTML= "<a href=\"" + url + "\">" + url + "</a>";
-}
-
-function updateDescription(desc) {
-    document.getElementById('posting_description').innerHTML=desc;
+    getConnections(li_company_name);
 }
 
 
@@ -166,8 +158,9 @@ function getCompanyInfo(company_name) {
     var url = "/companies/" + company_id + ":(name,description,website-url,twitter-id,employee-count-range,founded-year,locations:(address:(city,state,postal-code)))";
     IN.API.Raw(url)
     .result(function(response) {
-        alert(JSON.stringify(response));
+        //alert(JSON.stringify(response));
         company_description = response.description;
+        li_company_name = response.name;
         
         document.getElementById('num_employees').innerHTML= response.employeeCountRange["name"];
         document.getElementById('company_website').innerHTML=response.websiteUrl;
@@ -178,4 +171,15 @@ function getCompanyInfo(company_name) {
         document.getElementById('company_map').innerHTML="<img src=\"http://maps.googleapis.com/maps/api/staticmap?center=" + response.locations.values[0]["address"]["postalCode"] + "&zoom=13&size=350x300&maptype=roadmap&markers=color:red%7Ccolor:red%7Clabel:A%7C" + response.locations.values[0]["address"]["postalCode"] + "&sensor=false\"/>";
         //alert(num_employees);
     });
+}
+
+function getConnections(company_name_in) {
+    IN.API.Raw('/people-search:(people:(first-name,last-name,public-profile-url))?company-name=' + company_name_in + '&facet=network,F')
+    //IN.API.Raw('/people/~/connections:(first-name,last-name,positions)?company-name=mozilla-corporation')
+    .result(function(value) {
+        alert(JSON.stringify(value));
+        document.getElementById('you_know').innerHTML=value.people.values[0].firstName + " " + value.people.values[0].lastName + " - <a href=\"" + value.people.values[0].publicProfileUrl + "\">ask for a recommendation?</a>";
+        //alert(value.companies.values[0]["id"]);
+        
+    })
 }
