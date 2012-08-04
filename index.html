@@ -45,7 +45,7 @@
 		</div>
 	    </div>
             <script type="text/javascript">
-                $('#job_10').data("job_info", { job_title:"Security Engineer", company_name:"Mozilla", url:"http://mozilla.com/jobs/posting/2030329x9",desc:"Sample description"});
+                $('#job_10').data("job_info", { job_title:"Security Engineer", company_name:"Mozilla", url:"http://mozilla.com/jobs/posting/203032dddddd22d22d3dd9x9",desc:"Sample description"});
             </script>
             
             <div id="job_11" class="left_listing" onclick="updateRight(this)">
@@ -76,14 +76,20 @@
 
             <div id="posting_content">
                 <div id="posting_top">
-                    <div id="job_top_headline">
-                        <div id="posting_title">
-                            
-                        </div>
-                        <div id="posting_url">
-                            <a href=""></a>
-                        </div>
+                    <div id="posting_top_left">
+                        <div id="job_top_headline">
+                            <div id="posting_title">
+                                
+                            </div>
+                            <div id="posting_url">
+                                <a href=""></a>
+                            </div>
+                        </div>    
                     </div>
+                    <div id="posting_top_right">
+                        <a href="#" class="button danger" onclick="deleteJob();">Delete post</a>
+                    </div>
+                    
                 </div>
                 <div id="posting_under">
                     <div id="company_profile">
@@ -118,8 +124,6 @@
                         </div>
                         <div class="posting_section">
                             <span id="similar_jobs"></span>
-                            Network Security Engineer at Facebook - <a href="#">view full posting</a><br/>
-                            IT Security Analyst at Google - <a href="#">view full posting</a><br/>
                         </div>
                         
                     </div>

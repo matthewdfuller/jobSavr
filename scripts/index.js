@@ -83,21 +83,29 @@ function updateJob() {
 }
 
 
-function deleteJob(id) {
-    console.log(id);
+
+function deleteJob() {
     $.ajax({
         type: 'DELETE',
 	    contentType: 'application/json',
         url: backendURL,
         dataType: 'json',
-        data: JSON.stringify({"id":id}),  // put job id here. 
+        data: JSON.stringify({
+            "id": $('#hidden_id').val()}),  // put job id here.
         success: function(data, textStatus, jqXHR){
             if (handleError(data)) return;
         },
         error: function(jqXHR, textStatus, errorThrown){
-		    alert('delete job error: ' + textStatus);
+		    //alert('delete job error: ' + textStatus);
         }
     });
+    
+    document.getElementById('posting_under').style.display="none";
+    document.getElementById('job_top_headline').style.display="none";
+    document.getElementById('posting_top_right').style.display="none";
+    document.getElementById('none_selected').style.display="block";
+    
+    getJobs();
 }
 
 
@@ -145,6 +153,7 @@ function updateRight(elem) {
     document.getElementById('none_selected').style.display="none";
     document.getElementById('posting_under').style.display="block";
     document.getElementById('job_top_headline').style.display="block";
+    document.getElementById('posting_top_right').style.display="block";
     element_pass = elem;
     $(elem).toggleClass('left_listing_clicked');
     $(currently_highlighted).toggleClass('left_listing_clicked');
@@ -164,6 +173,7 @@ function saveChanges() {
 }
 
 //LINKED IN API CALLS
+var zippy_code;
 
 function getCompanyInfo(company_name) {
     IN.API.Raw('/company-search?keywords=' + encodeURIComponent(company_name))
@@ -188,6 +198,7 @@ function getCompanyProfile(c_id) {
         document.getElementById('year_founded').innerHTML=response.foundedYear;
         document.getElementById('company_description').innerHTML=response.description;
         document.getElementById('company_location').innerHTML=response.locations.values[0]["address"]["city"] + ", " + response.locations.values[0]["address"]["state"] + " " + response.locations.values[0]["address"]["postalCode"];
+        zippy_code = response.locations.values[0]["address"]["postalCode"];
         document.getElementById('company_twitter').innerHTML="@" + response.twitterId;
         document.getElementById('company_map').innerHTML="<img src=\"http://maps.googleapis.com/maps/api/staticmap?center=" + response.locations.values[0]["address"]["postalCode"] + "&zoom=13&size=350x300&maptype=roadmap&markers=color:red%7Ccolor:red%7Clabel:A%7C" + response.locations.values[0]["address"]["postalCode"] + "&sensor=false\"/>";
         //alert(num_employees);
@@ -214,14 +225,16 @@ function getConnections(company_name_in) {
 
 function getSimilarJobs() {
     var in_job_title = $(element_pass).data("job_info").job_title;
-    IN.API.Raw('/job-search?job-title=' + encodeURIComponent(in_job_title))
+    //IN.API.Raw('/job-search?job-title=' + encodeURIComponent(in_job_title))
+    IN.API.Raw('/job-search?keywords=' + encodeURIComponent(in_job_title))
     .result(function(value) {
         //alert(JSON.stringify(value));
         document.getElementById('similar_jobs').innerHTML="";
         
+        $(value.jobs.values).slice(0,3);
         $.each(value.jobs.values, function(index, job) {
-                alert(job.company["name"] + job.locationDescription);
-                //document.getElementById('you_know').innerHTML+=person.firstName + " " + person.lastName + " - <a href=\"" + person.publicProfileUrl + "\">ask for a recommendation?</a><br/>";
+                //alert(job.company["name"] + job.locationDescription);
+                document.getElementById('similar_jobs').innerHTML+=job.company["name"] + " - " + job.locationDescription + "<br/>";
             })
 
         //document.getElementById('you_know').innerHTML=value.people.values[0].firstName + " " + value.people.values[0].lastName + " - <a href=\"" + value.people.values[0].publicProfileUrl + "\">ask for a recommendation?</a>";
