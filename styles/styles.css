@@ -287,7 +287,6 @@ a:hover {text-decoration: underline; color: #0195C2;}
 
 #posting_description {
     text-overflow:ellipsis;
-    
 }
 
 .editable_textarea {
@@ -296,7 +295,7 @@ a:hover {text-decoration: underline; color: #0195C2;}
     font-family: sans-serif;
     border: 0px;
     width: 100%;
-    height: auto;
+    height: 30em;
 }
 
 .spacer {
