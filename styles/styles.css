@@ -159,6 +159,25 @@ a:hover {text-decoration: underline; color: #0195C2;}
     color: #303030;
 }
 
+#error_outer_box {
+    width: 100%;
+    height: 20px;
+    position: absolute;
+    top: 0px;
+    
+}
+
+#add_error {
+    width: 500px;
+    height: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    background: url('../images/right_bg.png');
+    background-repeat: repeat;
+    padding: 10px;
+    text-align: center;
+}
+
 #posting {
     width: 93%;
     height: 93%;

@@ -40,11 +40,14 @@ function addJob() {
 	success: function(data, textStatus, jqXHR){
 		if (data['error']!=null) {
 			// TODO: need a nice window here.
-			alert(data['error']);
+			//alert(data['error']);
+                        document.getElementById('error_outer_box').style.display="block";
+                        document.getElementById('add_error').innerHTML=data['error'];
 		}
 	},
 	error: function(jqXHR, textStatus, errorThrown){
-		alert('add job error: ' + textStatus);
+		//alert('add job error: ' + textStatus);
+                document.getElementById('error_outer_box').innerHTML="";
 	}
     });
     getJobs();
@@ -92,7 +95,7 @@ function deleteJob() {
 
 
 function getJobs() {
-    $("#left_inner").html("");
+    //$("#left_inner").html("");
     $.ajax({
 	    type: 'GET',
         dataType: 'json',
@@ -105,7 +108,8 @@ function getJobs() {
                 $("#job_" + job.id).data("job_info", {
                     job_title: job['title'],
                     company_name: job['company'],
-                    url: job['url']
+                    url: job['url'],
+                    desc: job['description']
                 });
                 console.log($("#job_" + job.id).data());
             });
