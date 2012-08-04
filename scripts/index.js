@@ -9,9 +9,10 @@ function getJobs() {
         success: function(data){
             var list = data == null ? [] : (json.data.jobs instanceof Array ? data.jobs : [data.jobs]);
 	    $.each(list, function(index, job) {
-		
+		$("#left_inner").append("<div id=\"job_" + job['id'] + "\" class=\"left_listing\" onclick=\"updateJob(this)\"><div class=\"listing_title\">" + job['title'] + "</div><div class=\"listing_company\">" + job['company'] + "</div></div><script type=\"text/javascript\">$('#job_' + " + job['id'] + "').data(\"job_info\", { job_title:\"" + job['title'] + "\", company_name:\"" + job['company'] + "\", url:\"" + job['url'] + "\"});</script>");
             }); 
-        });
+        }
+    });
 }
 
 //Call onClick when job on left is clicked
