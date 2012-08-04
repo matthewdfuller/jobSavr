@@ -292,5 +292,5 @@ function getSimilarJobs() {
 }
 
 function getTwitter() {
-    document.getElementById('twitter_feed').innerHTML="<script>new TWTR.Widget({version: 2,type: 'search',search: '" + cur_job.twitterId + "',interval: 30000,title: '',subject: '',width: 350,height: 300,theme: {shell: {background: '#8ec1da',color: '#ffffff'},tweets: {background: '#ffffff',color: '#444444',links: '#1985b5'}},features: {scrollbar: true,loop: true,live: true,behavior: 'default'}}).render().start();</script>";
+    $("twitter_feed").append("<script>new TWTR.Widget({version: 2,type: 'search',search: '" + cur_job.twitterId + "',interval: 30000,title: '',subject: '',width: 350,height: 300,theme: {shell: {background: '#8ec1da',color: '#ffffff'},tweets: {background: '#ffffff',color: '#444444',links: '#1985b5'}},features: {scrollbar: true,loop: true,live: true,behavior: 'default'}}).render().start();</script>");
 }
