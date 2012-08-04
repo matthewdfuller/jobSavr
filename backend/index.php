@@ -148,13 +148,13 @@ function checkJob($url, $token) {
 function updateJob() {
 	global $app;
 	$request = Slim::getInstance()->request();
-	$token = $app->getCookie('token');
+	$token = retrieve_member_id($app->getCookie('linkedin_oauth_l3bpklmxvfcp'));
 	$job = json_decode($request->getBody());
 	if (!verify($token, $job->id)) {
 		echo '{"error":"Job doesn\'t exist or you are not authorized."}';
 		return;
 	}
-	$sql = "UPDATE jobs SET url=:url, title=:title, company=:company, description=:desc WHERE id=:id AND user_token=:token";
+	$sql = "UPDATE jobs SET url=:url, title=:title, company=:company, description=:desc, company_id=:company_id WHERE id=:id AND user_token=:token";
 	try {
 		$db = connect();
 		$stmt = $db->prepare($sql);
@@ -163,6 +163,7 @@ function updateJob() {
 		$stmt->bindParam("url", $job->url);
 		$stmt->bindParam("title", $job->title);
 		$stmt->bindParam("company", $job->company);
+		$stmt->bindParam("company_id", $job->company_id);
 		$stmt->bindParam("desc", $job->description);
 		$stmt->execute();
 		$db = null;
@@ -176,7 +177,7 @@ function updateJob() {
 function deleteJob() {
 	global $app;
 	$request = Slim::getInstance()->request();
-	$token = $app->getCookie('token');
+	$token = retrieve_member_id($app->getCookie('linkedin_oauth_l3bpklmxvfcp'));
 	$job = json_decode($request->getBody());
 	if (!verify($token, $job->id)) {
 		echo '{"error":"Job doesn\'t exist or you are not authorized."}';
@@ -218,12 +219,9 @@ function verify($token, $id) {
 
 function connect() {
 	$dbhost="localhost";
-	/* $dbuser="root"; */
-	/* $dbpass="mozilla_oakwood"; */
-	/* $dbname="jobsavr"; */
-	$dbuser="cranecon_jobsavr";
-	$dbname="cranecon_jobsavr";
-	$dbpass="cee-j6AH3quu";
+	$dbuser="jobsavr";
+	$dbpass="mozilla_oakwood";
+	$dbname="jobsavr";
 	$dbh = new PDO("mysql:host=$dbhost;dbname=$dbname", $dbuser, $dbpass);	
 	$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	return $dbh;
