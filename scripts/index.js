@@ -38,17 +38,15 @@ function addJob() {
 	dataType: 'json',
 	data: formToJSON(),
 	success: function(data, textStatus, jqXHR){
-		if (data[0] =='error') {
-			alert('error:' + data[0].text);
-		} else {
-			alert('job added successfully.');
+		if (data['error']!=null) {
+			// TODO: need a nice window here.
+			alert(data['error']);
 		}
 	},
 	error: function(jqXHR, textStatus, errorThrown){
 		alert('add job error: ' + textStatus);
 	}
     });
-    getJobs();
 }
 
 
@@ -60,10 +58,9 @@ function updateJob() {
         dataType: 'json',
         data: formToJSON(),
         success: function(data, textStatus, jqXHR){
-		if (data[0] =='error') {
-                        alert('error:' + data[0].text);
-                } else {
-                        alert('job updated successfully.');
+		if (data['error']!=null) {
+                        // TODO: need a nice window here.
+                        alert(data['error']);
                 }
         },
         error: function(jqXHR, textStatus, errorThrown){
@@ -81,10 +78,9 @@ function deleteJob() {
         dataType: 'json',
         data: id,  // pull job id here. 
         success: function(data, textStatus, jqXHR){
-		if (data[0] =='error') {
-                        alert('error:' + data[0].text);
-                } else {
-                        alert('job deleted successfully.');
+		if (data['error']!=null) {
+                        // TODO: need a nice window here.
+                        alert(data['error']);
                 }
         },
         error: function(jqXHR, textStatus, errorThrown){

@@ -22,9 +22,15 @@ function test() {
 }
 
 function retrieve_member_id($cookies) {
-	//$cookie = (string)$cookies;
-	//echo $cookie;
-	return "FUq3ksMk9b";
+	$token = implode(' ', $cookies);
+	$m = "\"member_id\":";
+	$pos = strpos($token, $m);
+	//echo 'token:'.$token;
+	//echo 'pos:'.$pos;
+	$member_id = substr($token, $pos+13, 11);
+	//echo 'id:', $member_id;
+	//return "FUq3ksMk9b";
+	return $member_id;
 }
 
 function getJobs() {
@@ -44,7 +50,7 @@ function getJobs() {
         echo '"jobs":' . json_encode($jobs);
         echo '}';
 	}catch(PDOException $e) {
-		echo '{"error":{"text":'. $e->getMessage() .'}}';
+		echo '{"error":'. $e->getMessage() .'}';
 	}
 }
 
@@ -55,14 +61,13 @@ function addJob() {
 	
 	$job = json_decode($request->getBody());
 	if (checkJob($job->url, $token)) {
-		echo '{"error":{"text":"The job already exists."}}';
+		echo '{"error":"The job already exists."}';
 		return;
 	}
 	$sql = "INSERT INTO jobs (user_token, url, title, company, description) VALUES (:token, :url, :title, :company, :desc)";
 	try {
 		$db = connect();
 		$stmt = $db->prepare($sql);
-		#$stmt->bindParam("token", $token);
 		$stmt->bindParam("token", $token);
 		$stmt->bindParam("url", $job->url);
 		$stmt->bindParam("title", $job->title);
@@ -73,7 +78,7 @@ function addJob() {
 		$db = null;
 		echo json_encode($job);
 	} catch(PDOException $e) {
-		echo '{"error":{"text":'. $e->getMessage() .'}}';
+		echo '{"error":'. $e->getMessage() .'}';
 	}
 }
 
@@ -93,7 +98,7 @@ function checkJob($url, $token) {
                         return false;
                 }
         } catch(PDOException $e) {
-                echo '{"error":{"text":'. $e->getMessage() .'}}';
+                echo '{"error":'. $e->getMessage() .'}';
         }
         return false;
 }
@@ -105,7 +110,7 @@ function updateJob() {
 	$token = $app->getCookie('token');
 	$job = json_decode($request->getBody());
 	if (!verify($token, $job->id)) {
-		echo '{"error":{"text": "Job doesn\'t exist or you are not authorized."}}';
+		echo '{"error":"Job doesn\'t exist or you are not authorized."}';
 		return;
 	}
 	$sql = "UPDATE jobs SET url=:url, title=:title, company=:company, description=:desc WHERE id=:id AND user_token=:token";
@@ -122,7 +127,7 @@ function updateJob() {
 		$db = null;
 		echo json_encode($job);
 	}catch(PDOException $e) {
-		echo '{"error":{"text":'. $e->getMessage() .'}}';
+		echo '{"error":'. $e->getMessage() .'}';
 	}
 }
 
@@ -133,7 +138,7 @@ function deleteJob() {
 	$token = $app->getCookie('token');
 	$job = json_decode($request->getBody());
 	if (!verify($token, $job->id)) {
-		echo '{"error":{"text": "Job doesn\'t exist or you are not authorized."}}';
+		echo '{"error":"Job doesn\'t exist or you are not authorized."}';
 		return;
 	}
 	$sql = "DELETE FROM jobs WHERE id=:id AND user_token=:token";
@@ -145,7 +150,7 @@ function deleteJob() {
 		$stmt->execute();
 		$db = null;
 	} catch(PDOException $e) {
-		echo '{"error":{"text":'. $e->getMessage() .'}}';
+		echo '{"error":'. $e->getMessage() .'}';
 	}
 }
 
@@ -164,7 +169,7 @@ function verify($token, $id) {
 			return false;
 		}
         } catch(PDOException $e) {
-		echo '{"error":{"text":'. $e->getMessage() .'}}';
+		echo '{"error":'. $e->getMessage() .'}';
         }
 	return false;
 }
