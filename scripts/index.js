@@ -161,16 +161,7 @@ function updateRight(elem) {
     //getConnections(li_company_name);
 }
 
-<<<<<<< HEAD
 //MakeEditable makes textboxes editable
-var editing = false;
-function makeEditable() {
-    editing = true;
-}
-
-=======
-//MakeEditable makes textboxes editable save to db
->>>>>>> js updates
 function saveChanges() {
     updateJob();
     
