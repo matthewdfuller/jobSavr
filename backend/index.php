@@ -1,6 +1,8 @@
 <?php
 require 'Slim/Slim.php';
 
+$prod = false;
+
 $app = new Slim();
 
 #$app->get('/index', 'test');
@@ -219,14 +221,19 @@ function verify($token, $id) {
 
 
 function connect() {
-	$dbhost="localhost";
-	/* $dbuser="jobsavr"; */
-	/* $dbpass="mozilla_oakwood"; */
-	/* $dbname="jobsavr"; */
-	$dbuser="cranecon_jobsavr";
-	$dbpass="cee-j6AH3quu";
-	$dbname="cranecon_jobsavr";
-	$dbh = new PDO("mysql:host=$dbhost;dbname=$dbname", $dbuser, $dbpass);	
+    global $prod;
+    if ($prod) {
+        $dbhost="172.16.0.51";
+        $dbuser="rinoninf_jobsavr";
+        $dbpass="cee-j6AH3quu";
+        $dbname="rinoninf_jobsavr";
+    } else {
+        $dbhost="localhost";
+        $dbuser="jobsavr";
+        $dbpass="mozilla_oakwood";
+        $dbname="jobsavr";
+    }
+    $dbh = new PDO("mysql:host=$dbhost;dbname=$dbname", $dbuser, $dbpass);	
 	$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	return $dbh;
 }
