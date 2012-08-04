@@ -37,28 +37,53 @@ function getJobDesc($id) {
         }
 }*/
 
-function retrieve_member_id($cookies) {
-	$token = implode(' ', $cookies);
-	$m = "\"member_id\":";
-	$pos = strpos($token, $m);
-	//echo 'token:'.$token;
-	//echo 'pos:'.$pos;
-	$member_id = substr($token, $pos+13, 10);
-	//echo 'id:', $member_id;
-	//return "FUq3ksMk9b";
-	return $member_id;
+function error($err_str) {
+    global $app;
+    $app->halt(200, '{"error": "' . $err_str . '"}');
+}
+
+function retrieve_member_id($credentials) {
+    $consumer_secret = 'a9WMu9e95gFmfKmR';
+
+    $credentials = json_decode($credentials);
+
+    // validate signature
+    if ($credentials->signature_version == 1) {
+        if ($credentials->signature_order && is_array($credentials->signature_order)) {
+            $base_string = '';
+            // build base string from values ordered by signature_order
+            foreach ($credentials->signature_order as $key) {
+                if (isset($credentials->$key)) {
+                    $base_string .= $credentials->$key;
+                } else {
+                    print "missing signature parameter: $key";
+                }
+            }
+            // hex encode an HMAC-SHA1 string
+            $signature =  base64_encode(hash_hmac('sha1', $base_string, $consumer_secret, true));
+            // check if our signature matches the cookie's
+            if ($signature != $credentials->signature) {
+                return error("signature validation failed");
+            }
+        } else {
+            return error("signature order missing");
+        }
+    } else {
+        return error("unknown cookie version");
+    }
+
+	return $credentials->member_id;
 }
 
 function getJobs() {
 	global $app;
 	$request = Slim::getInstance()->request();
-	$auth_cookie = json_decode($app->getCookie('linkedin_oauth_l3bpklmxvfcp'));
-    $user_id = $auth_cookie->member_id;
+	$token = retrieve_member_id($app->getCookie('linkedin_oauth_l3bpklmxvfcp'));
 	$sql = "SELECT * FROM jobs WHERE user_token=:token";
 	try {
 		$db = connect();
 		$stmt = $db->prepare($sql);
-		$stmt->bindParam("token", $user_id);
+		$stmt->bindParam("token", $token);
 		$stmt->execute();
 		$jobs = $stmt->fetchAll(PDO::FETCH_OBJ);
 		$db = null;
@@ -73,7 +98,7 @@ function getJobs() {
 function addJob() {
 	global $app;
 	$request = Slim::getInstance()->request();
-	$token = retrieve_member_id($app->request()->cookies());
+	$token = retrieve_member_id($app->getCookie('linkedin_oauth_l3bpklmxvfcp'));
 	
 	$job = json_decode($request->getBody());
 	if (checkJob($job->url, $token)) {
@@ -193,12 +218,12 @@ function verify($token, $id) {
 
 function connect() {
 	$dbhost="localhost";
-	$dbuser="root";
-	$dbpass="mozilla_oakwood";
-	$dbname="jobsavr";
-	//$dbuser="cranecon_jobsavr";
-	//$dbname="cranecon_jobsavr";
-	//$dbpass="cee-j6AH3quu";
+	/* $dbuser="root"; */
+	/* $dbpass="mozilla_oakwood"; */
+	/* $dbname="jobsavr"; */
+	$dbuser="cranecon_jobsavr";
+	$dbname="cranecon_jobsavr";
+	$dbpass="cee-j6AH3quu";
 	$dbh = new PDO("mysql:host=$dbhost;dbname=$dbname", $dbuser, $dbpass);	
 	$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	return $dbh;
