@@ -220,9 +220,12 @@ function verify($token, $id) {
 
 function connect() {
 	$dbhost="localhost";
-	$dbuser="jobsavr";
-	$dbpass="mozilla_oakwood";
-	$dbname="jobsavr";
+	/* $dbuser="jobsavr"; */
+	/* $dbpass="mozilla_oakwood"; */
+	/* $dbname="jobsavr"; */
+	$dbuser="cranecon_jobsavr";
+	$dbpass="cee-j6AH3quu";
+	$dbname="cranecon_jobsavr";
 	$dbh = new PDO("mysql:host=$dbhost;dbname=$dbname", $dbuser, $dbpass);	
 	$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	return $dbh;

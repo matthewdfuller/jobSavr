@@ -1,5 +1,5 @@
-//var backendURL = 'https://secure.bluehost.com/~cranecon/jobsavr/index.php';
-var backendURL = 'https://localhost/backend/index.php';
+var backendURL = 'https://secure.bluehost.com/~cranecon/jobsavr/backend/index.php';
+//var backendURL = 'https://localhost/backend/index.php';
 
 
 // 2. Runs when the JavaScript framework is loaded
@@ -144,14 +144,12 @@ var founded_year = "";
 var company_description = "";
 var company_url = "";
 var li_company_name = "";
-var element_pass;
 
 function updateRight(elem) {
     document.getElementById('none_selected').style.display="none";
     document.getElementById('posting_under').style.display="block";
     document.getElementById('job_top_headline').style.display="block";
     document.getElementById('posting_top_right').style.display="block";
-    element_pass = elem;
     $(elem).toggleClass('left_listing_clicked');
     $(currently_highlighted).toggleClass('left_listing_clicked');
     currently_highlighted = elem;
