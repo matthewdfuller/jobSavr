@@ -224,6 +224,7 @@ a:hover {text-decoration: underline; color: #0195C2;}
 
 #posting_top_left {
     float: left;
+    width: 80%;
 }
 
 #posting_top_right {
