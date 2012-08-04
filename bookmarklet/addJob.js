@@ -38,6 +38,7 @@ var iframe = document.createElement('iframe');
 iframe.id = 'jobsavr_iframe';
 iframe.src = appURL+'/bookmarklet/addjob.html?' + encodeURIComponent(window.location);
 iframe.style.width = '30em';
+iframe.style.border = '0';
 iframe.scolling = 'no';
 popup.appendChild(iframe);
 
