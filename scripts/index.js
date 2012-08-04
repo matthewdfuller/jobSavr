@@ -17,6 +17,8 @@ function updateJob(elem) {
     $(elem).toggleClass('left_listing_clicked');
     $(currently_highlighted).toggleClass('left_listing_clicked');
     currently_highlighted = elem;
+    updateJobTitle($(elem).data("job_info").job_title, $(elem).data("job_info").company_name);
+    updateURL($(elem).data("job_info").url);
 }
 
 function updateJobTitle(job_title, company_name) {
