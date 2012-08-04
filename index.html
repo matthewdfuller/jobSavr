@@ -3,10 +3,10 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
     <title>jobSavr - Save Your Jobs</title>
-    <link href="styles/styles.css" rel="stylesheet" type="text/css">
-    <link href='http://fonts.googleapis.com/css?family=Ruda:400,900' rel='stylesheet' type='text/css'>
-    <link href='http://fonts.googleapis.com/css?family=Averia+Sans+Libre:700' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" href="styles/gh-buttons.css">
+    <link href="styles/styles.css" rel="stylesheet" type="text/css"/>
+    <link href='http://fonts.googleapis.com/css?family=Ruda:400,900' rel='stylesheet' type='text/css'/>
+    <link href='http://fonts.googleapis.com/css?family=Averia+Sans+Libre:700' rel='stylesheet' type='text/css'/>
+    <link rel="stylesheet" href="styles/gh-buttons.css"/>
         
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
     <script type="text/javascript" src="scripts/addjob.js"></script>
@@ -39,7 +39,7 @@
         }
     </script>
 </head>
-<body>
+<body onload="getUsersJobs()">
     <div id="topbar">
 	<div id="title_logo">
             jobSavr
@@ -49,10 +49,11 @@
             <div id="profiles"></div>
         </div>
     </div>
+    
+<!--LEFT HAND PANEL WITH LISTS OF JOBS-->
     <div id="left">
-	
 	<div id="left_inner">
-	    <div class="left_listing">
+	    <div id="job_1" class="left_listing" onclick="updateJob(this)">
 		<div class="listing_title">
 		    Security Engineer    
 		</div>
@@ -60,8 +61,11 @@
 		    Mozilla Coporation
 		</div>
 	    </div>
-	    
-<div class="left_listing">
+            <script type="text/javascript">
+                $('#job_1').data({ job_title:"Security Engineer", company_name:"Mozilla Corporation", url:"", squareFeet:2400 });
+            </script>
+            
+            <div class="left_listing" onclick="updateJob(this)">
 		<div class="listing_title">
 		    Security Engineer    
 		</div>
@@ -69,7 +73,7 @@
 		    Mozilla Coporation
 		</div>
 	    </div>
-	    <div class="left_listing">
+	    <div class="left_listing" onclick="updateJob(this)">
 		<div class="listing_title">
 		    Security Engineer    
 		</div>
@@ -79,11 +83,17 @@
 	    </div>
 	</div>
     </div>
+<!--END LEFT HAND PANEL-->
+
+<!--RIGHT SIDE PANEL WITH COMPANY INFO-->
     <div id="right">
         <div id="posting">
+<!--ADD JOB BUTTON-->
             <div id="add_job">
                 <a href="#" class="button big add" onclick="addJob()">Add New Job</a>
             </div>
+<!--END ADD JOB BUTTON-->
+
             <div id="posting_content">
                 <div id="posting_top">
                     <div id="posting_title">
@@ -108,7 +118,7 @@
                             Company Profile
                         </div>
                         <div class="posting_section">
-                            Number of Employees: 200-400<br/>
+                            Number of Employees: <span id="num_employees">200-400</span><br/>
                             Average Salary: $89,500<br/>
                         </div>
                         <div class="spacer"></div>
@@ -155,7 +165,8 @@
             </div>
         </div>	
     </div>
-    
+
+<!--POPUP BOX FOR ADDING JOB-->
     <div id="add_job_outer_box">
         <div id="add_job_inner_box">
             <div id="add_job_inner_heading">
@@ -170,5 +181,7 @@
             <a href="#" onclick="closePopup()">Close</a>
         </div>
     </div>
+<!--END POPUP BOX-->
+
 </body>
 </html>
