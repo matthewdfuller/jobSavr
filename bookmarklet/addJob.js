@@ -7,7 +7,7 @@ s.setAttribute('src','https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.
 document.documentElement.appendChild(s);
 
 var popupRequest = new XMLHttpRequest();
-popupRequest.open('GET', appURL+'/addjob.html', true);
+popupRequest.open('GET', appURL+'/bookmarklet/addjob.html', true);
 popupRequest.addEventListener('load', popupRetrieved);
 popupRequest.send();
 
